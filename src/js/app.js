@@ -117,11 +117,15 @@
 
     return CardMorph.initAll('[data-card-morph]', {
       duration: 0.6,
-      smoothScroll: false, // Using our own Lenis instance
+      smoothScroll: true, // CardMorph handles Lenis with proper prevent() for views
       cardStacking: true,
       lightbox: true,
       keyboard: true,
-      draggable: true
+      draggable: true,
+      lenis: {
+        duration: 1.2,
+        smoothWheel: true
+      }
     });
   }
 
@@ -276,44 +280,11 @@
   }
 
   // ==========================================================================
-  // Initialize Lenis Smooth Scroll
+  // Lenis Smooth Scroll - HANDLED BY CardMorph
   // ==========================================================================
-
-  function initLenis() {
-    if (typeof Lenis === 'undefined') {
-      console.warn('Lenis not loaded, using native scroll');
-      return null;
-    }
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
-    });
-
-    // Integrate with GSAP
-    if (typeof gsap !== 'undefined' && gsap.ticker) {
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-      });
-      gsap.ticker.lagSmoothing(0);
-    } else {
-      // Fallback RAF loop
-      function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
-      requestAnimationFrame(raf);
-    }
-
-    return lenis;
-  }
+  // NOTE: Lenis is now initialized by CardMorph component (smoothScroll: true)
+  // CardMorph's Lenis uses prevent: (node) => node.closest('.cm-view')
+  // which allows scroll inside views while blocking external scroll.
 
   // ==========================================================================
   // Initialize GSAP ScrollTrigger Animations
@@ -350,8 +321,8 @@
       });
     }
 
-    // Cards stacking effect
-    initCardStacking();
+    // NOTE: Card stacking is handled by CardMorph component (cardStacking: true)
+    // Do NOT call initCardStacking() here - it causes duplicate ScrollTriggers
 
     // Cards hint visibility
     const cardsHint = document.querySelector('.cards-hint');
@@ -409,32 +380,11 @@
   }
 
   // ==========================================================================
-  // Card Stacking Effect (GSAP ScrollTrigger)
+  // Card Stacking Effect - HANDLED BY CardMorph component
   // ==========================================================================
-
-  function initCardStacking() {
-    const cards = gsap.utils.toArray('.cm-card');
-
-    if (cards.length === 0) return;
-
-    const lastCard = cards[cards.length - 1];
-
-    // All cards pin at center and stay pinned until the LAST card is also centered
-    cards.forEach((card, index) => {
-      const isLast = index === cards.length - 1;
-
-      if (!isLast) {
-        ScrollTrigger.create({
-          trigger: card,
-          start: 'center center',
-          endTrigger: lastCard,
-          end: 'center center', // Unpin when last card center reaches viewport center
-          pin: true,
-          pinSpacing: false
-        });
-      }
-    });
-  }
+  // NOTE: Card stacking is now handled by the CardMorph component when
+  // cardStacking: true is passed during initialization. The duplicate
+  // initCardStacking() function was removed to prevent conflicts.
 
   // ==========================================================================
   // Fallback Animations (no GSAP)
@@ -503,14 +453,11 @@
     // Split text for letter animations
     initSplitText();
 
-    // Initialize Card Morph component
+    // Initialize Card Morph component (handles Lenis smooth scroll internally)
     initCardMorph();
 
     // Initialize lightbox (fallback for non-card-morph content)
     window.lightbox = new Lightbox();
-
-    // Initialize Lenis smooth scroll
-    const lenis = initLenis();
 
     // Initialize scroll animations
     initScrollAnimations();

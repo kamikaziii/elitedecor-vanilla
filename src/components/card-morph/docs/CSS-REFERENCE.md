@@ -45,7 +45,7 @@ All custom properties use the `--cm-` prefix to avoid conflicts.
 
 | Property | Default | Description |
 |----------|---------|-------------|
-| `--cm-color-background` | `#0a0a0a` | Page/gallery background |
+| `--cm-color-background` | `#0a0a0a` | Background for cards, views, and lightbox (gallery container is transparent) |
 | `--cm-color-surface` | `#141414` | Card/element surfaces |
 | `--cm-color-surface-elevated` | `#1a1a1a` | Elevated surfaces |
 | `--cm-color-text` | `#ffffff` | Primary text color |
@@ -134,9 +134,17 @@ Card Morph uses BEM (Block Element Modifier) naming with `cm-` prefix.
 
 | Class | Description |
 |-------|-------------|
-| `.cm-gallery` | Main gallery container |
+| `.cm-gallery` | Main gallery container (transparent background by default) |
 | `.cm-gallery--initialized` | Added after JS initialization |
 | `.cm-gallery--light` | Light theme modifier |
+
+**Note:** The gallery container uses `background: transparent` by default, allowing your page/body background to show through. Cards and views have their own backgrounds. To add a gallery background:
+
+```css
+.cm-gallery {
+  background: var(--cm-color-background);
+}
+```
 
 ### Cards
 

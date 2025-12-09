@@ -1,0 +1,917 @@
+/**
+ * Card Morph Gallery v1.0.0
+ * A morphing card gallery component using GSAP
+ *
+ * @license MIT
+ * @see https://github.com/example/card-morph
+ */
+
+/* ==========================================================================
+   CSS CUSTOM PROPERTIES (Theming Layer)
+   Use --cm- prefix to namespace all properties
+   ========================================================================== */
+
+:root {
+  /* Colors */
+  --cm-color-background: #0a0a0a;
+  --cm-color-surface: #141414;
+  --cm-color-surface-elevated: #1a1a1a;
+  --cm-color-text: #ffffff;
+  --cm-color-text-muted: rgba(255, 255, 255, 0.6);
+  --cm-color-text-subtle: rgba(255, 255, 255, 0.4);
+  --cm-color-overlay: rgba(0, 0, 0, 0.9);
+  --cm-color-border: rgba(255, 255, 255, 0.1);
+  --cm-color-accent: #d4af37;
+
+  /* Typography */
+  --cm-font-family-display: 'Instrument Sans', system-ui, sans-serif;
+  --cm-font-family-body: 'Inter', system-ui, sans-serif;
+  --cm-font-size-xs: 0.75rem;
+  --cm-font-size-sm: 0.875rem;
+  --cm-font-size-base: 1rem;
+  --cm-font-size-lg: 1.25rem;
+  --cm-font-size-xl: 1.5rem;
+  --cm-font-size-2xl: 2rem;
+  --cm-font-size-3xl: 3rem;
+  --cm-font-size-hero: clamp(3rem, 10vw, 8rem);
+
+  /* Spacing */
+  --cm-spacing-xs: 0.25rem;
+  --cm-spacing-sm: 0.5rem;
+  --cm-spacing-md: 1rem;
+  --cm-spacing-lg: 1.5rem;
+  --cm-spacing-xl: 2rem;
+  --cm-spacing-2xl: 3rem;
+  --cm-spacing-3xl: 4rem;
+
+  /* Animation */
+  --cm-duration-fast: 0.2s;
+  --cm-duration-normal: 0.4s;
+  --cm-duration-slow: 0.6s;
+  --cm-duration-slower: 0.8s;
+  --cm-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --cm-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --cm-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Layout */
+  --cm-card-height: 85vh;
+  --cm-card-min-height: 400px;
+  --cm-card-max-height: 800px;
+  --cm-card-border-radius: 27px;
+  --cm-gallery-gap: 24px;
+  --cm-gallery-padding: 40px;
+
+  /* Shadows */
+  --cm-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --cm-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --cm-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.4);
+  --cm-shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+  /* Z-index layers */
+  --cm-z-card: 1;
+  --cm-z-card-hover: 10;
+  --cm-z-view: 2000;
+  --cm-z-view-close: 2100;
+  --cm-z-gallery-nav: 100;
+}
+
+/* Light theme override */
+[data-theme="light"] .cm-gallery,
+.cm-gallery--light {
+  --cm-color-background: #ffffff;
+  --cm-color-surface: #f8fafc;
+  --cm-color-surface-elevated: #ffffff;
+  --cm-color-text: #1e293b;
+  --cm-color-text-muted: rgba(30, 41, 59, 0.7);
+  --cm-color-text-subtle: rgba(30, 41, 59, 0.5);
+  --cm-color-overlay: rgba(255, 255, 255, 0.95);
+  --cm-color-border: rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   BLOCK: Gallery Container
+   ========================================================================== */
+
+.cm-gallery {
+  font-family: var(--cm-font-family-body);
+  color: var(--cm-color-text);
+  /* Transparent by default - lets page/body background show through.
+     Cards and views have their own backgrounds.
+     To set a gallery background: .cm-gallery { background: var(--cm-color-background); } */
+  background: transparent;
+}
+
+.cm-gallery--initialized {
+  /* Marker class for JavaScript initialization */
+}
+
+/* ==========================================================================
+   BLOCK: Card
+   ========================================================================== */
+
+.cm-card {
+  position: relative;
+  width: 100%;
+  height: var(--cm-card-height);
+  min-height: var(--cm-card-min-height);
+  max-height: var(--cm-card-max-height);
+  border-radius: var(--cm-card-border-radius);
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+  background: var(--cm-color-surface);
+}
+
+.cm-card:focus-visible {
+  outline: 2px solid var(--cm-color-accent);
+  outline-offset: 4px;
+}
+
+/* Element: Card Image */
+.cm-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--cm-duration-slow) var(--cm-ease-out);
+}
+
+.cm-card:hover .cm-card__image {
+  transform: scale(1.03);
+}
+
+/* Element: Card Title */
+.cm-card__title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--cm-font-family-display);
+  font-size: 75px;
+  font-weight: 700;
+  letter-spacing: -3.75px;
+  line-height: 1.1;
+  color: var(--cm-color-text);
+  text-align: center;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 2;
+  margin: 0;
+}
+
+/* Element: Card Overlay (optional gradient) */
+.cm-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Modifier: Card stacking z-index */
+.cm-card:nth-child(1) { z-index: 1; }
+.cm-card:nth-child(2) { z-index: 2; }
+.cm-card:nth-child(3) { z-index: 3; }
+.cm-card:nth-child(4) { z-index: 4; }
+.cm-card:nth-child(5) { z-index: 5; }
+.cm-card:nth-child(6) { z-index: 6; }
+.cm-card:nth-child(7) { z-index: 7; }
+.cm-card:nth-child(8) { z-index: 8; }
+.cm-card:nth-child(9) { z-index: 9; }
+.cm-card:nth-child(10) { z-index: 10; }
+
+/* ==========================================================================
+   BLOCK: View (Expanded Collection View)
+   ========================================================================== */
+
+.cm-view {
+  position: fixed;
+  inset: 0;
+  z-index: var(--cm-z-view);
+  background: var(--cm-color-background);
+  overflow-y: auto;
+  overflow-x: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--cm-duration-normal) var(--cm-ease-default),
+    visibility var(--cm-duration-normal);
+
+  /* Prevent browser back/forward gestures */
+  overscroll-behavior: none;
+}
+
+.cm-view--active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Element: View Inner Container */
+.cm-view__inner {
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* Element: Close Button */
+.cm-view__close {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: var(--cm-z-view-close);
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background var(--cm-duration-fast) var(--cm-ease-default),
+    transform var(--cm-duration-fast) var(--cm-ease-default);
+}
+
+.cm-view__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.cm-view__close:focus-visible {
+  outline: 2px solid var(--cm-color-accent);
+  outline-offset: 2px;
+}
+
+.cm-view__close::before,
+.cm-view__close::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background: var(--cm-color-text);
+}
+
+.cm-view__close::before { transform: rotate(45deg); }
+.cm-view__close::after { transform: rotate(-45deg); }
+
+/* ==========================================================================
+   BLOCK: Hero Section (within View)
+   ========================================================================== */
+
+.cm-hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Element: Hero Background */
+.cm-hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.cm-hero__background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Element: Hero Content */
+.cm-hero__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 var(--cm-spacing-xl);
+}
+
+/* Element: Hero Title */
+.cm-hero__title {
+  font-family: var(--cm-font-family-display);
+  font-size: var(--cm-font-size-hero);
+  font-weight: 700;
+  color: var(--cm-color-text);
+  line-height: 1;
+  margin: 0 0 var(--cm-spacing-xl);
+}
+
+.cm-hero__title span {
+  display: block;
+}
+
+/* Element: Hero Description */
+.cm-hero__description {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--cm-color-text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   BLOCK: Info Section (within View)
+   ========================================================================== */
+
+.cm-info {
+  padding: clamp(60px, 10vh, 120px) clamp(24px, 5vw, 80px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 8vw, 120px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .cm-info {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Element: Info Description */
+.cm-info__description h2 {
+  font-family: var(--cm-font-family-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  margin: 0 0 var(--cm-spacing-xl);
+  color: var(--cm-color-text);
+}
+
+.cm-info__description p {
+  font-size: var(--cm-font-size-lg);
+  line-height: 1.8;
+  color: var(--cm-color-text-muted);
+  margin: 0;
+}
+
+/* Element: Info Details */
+.cm-info__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cm-spacing-xl);
+}
+
+/* Element: Detail Block */
+.cm-info__detail {
+  padding-bottom: var(--cm-spacing-lg);
+  border-bottom: 1px solid var(--cm-color-border);
+}
+
+.cm-info__detail:last-child {
+  border-bottom: none;
+}
+
+.cm-info__detail-label {
+  font-size: var(--cm-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--cm-color-text-subtle);
+  margin-bottom: var(--cm-spacing-sm);
+}
+
+.cm-info__detail-value {
+  font-family: var(--cm-font-family-display);
+  font-size: var(--cm-font-size-xl);
+  font-weight: 500;
+  color: var(--cm-color-text);
+}
+
+/* ==========================================================================
+   BLOCK: Horizontal Gallery Section
+   ========================================================================== */
+
+.cm-gallery-section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--cm-color-background);
+
+  /* Prevent browser back/forward gestures */
+  overscroll-behavior: none;
+  touch-action: pan-x pan-y pinch-zoom;
+}
+
+/* Element: Gallery Wrapper (Draggable) */
+.cm-gallery-section__track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  gap: var(--cm-gallery-gap);
+  padding: var(--cm-gallery-padding);
+  padding-right: 80px;
+  will-change: transform;
+  cursor: grab;
+}
+
+.cm-gallery-section__track:active {
+  cursor: grabbing;
+}
+
+/* Element: Gallery Item */
+.cm-gallery-section__item {
+  flex-shrink: 0;
+  height: calc(100% - calc(var(--cm-gallery-padding) * 2));
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform var(--cm-duration-normal) var(--cm-ease-out),
+    box-shadow var(--cm-duration-normal) var(--cm-ease-default);
+}
+
+.cm-gallery-section__item:hover {
+  transform: scale(1.02);
+  box-shadow: var(--cm-shadow-xl);
+}
+
+.cm-gallery-section__item img {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Element: Gallery Hint */
+.cm-gallery-section__hint {
+  position: absolute;
+  bottom: var(--cm-gallery-padding);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--cm-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--cm-color-text-subtle);
+  display: flex;
+  align-items: center;
+  gap: var(--cm-spacing-sm);
+  pointer-events: none;
+}
+
+.cm-gallery-section__hint::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--cm-color-text-subtle);
+  animation: cm-scroll-hint 1.5s ease-in-out infinite;
+}
+
+@keyframes cm-scroll-hint {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  50% { transform: translateX(10px); opacity: 0.5; }
+}
+
+/* ==========================================================================
+   BLOCK: Gallery Navigation
+   Uses isolation: isolate for proper z-index stacking (2025 best practice)
+   ========================================================================== */
+
+.cm-gallery-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  isolation: isolate;
+  z-index: var(--cm-z-gallery-nav);
+}
+
+/* Element: Navigation Arrow */
+.cm-gallery-nav__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background var(--cm-duration-fast) var(--cm-ease-default),
+    transform var(--cm-duration-fast) var(--cm-ease-default),
+    opacity var(--cm-duration-fast) var(--cm-ease-default);
+  pointer-events: auto;
+}
+
+.cm-gallery-nav__arrow:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.cm-gallery-nav__arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.cm-gallery-nav__arrow:focus-visible {
+  outline: 2px solid var(--cm-color-accent);
+  outline-offset: 2px;
+}
+
+.cm-gallery-nav__arrow svg {
+  width: 24px;
+  height: 24px;
+  color: var(--cm-color-text);
+}
+
+/* Modifier: Arrow Position */
+.cm-gallery-nav__arrow--prev {
+  left: 24px;
+}
+
+.cm-gallery-nav__arrow--next {
+  right: 24px;
+}
+
+/* Modifier: Arrow Hidden */
+.cm-gallery-nav__arrow--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hide arrows on mobile (touch devices prefer swipe) */
+@media (max-width: 768px) {
+  .cm-gallery-nav__arrow {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   BLOCK: Lightbox
+   Modern lightbox using native <dialog> element (2025 best practice)
+   ========================================================================== */
+
+.cm-lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: hidden;
+  z-index: 3000;
+}
+
+.cm-lightbox::backdrop {
+  display: none; /* We use custom overlay for GSAP animation */
+}
+
+.cm-lightbox[open] {
+  display: flex;
+}
+
+/* Element: Overlay */
+.cm-lightbox__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1;
+}
+
+/* Element: Container */
+.cm-lightbox__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+/* Element: Header */
+.cm-lightbox__header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  padding: var(--cm-spacing-lg);
+}
+
+/* Element: Close Button */
+.cm-lightbox__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--cm-color-text);
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    background var(--cm-duration-fast) var(--cm-ease-default),
+    transform var(--cm-duration-fast) var(--cm-ease-default);
+}
+
+.cm-lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.cm-lightbox__close:focus-visible {
+  outline: 2px solid var(--cm-color-accent);
+  outline-offset: 2px;
+}
+
+.cm-lightbox__close svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Element: Main Content Area */
+.cm-lightbox__main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px var(--cm-spacing-xl);
+}
+
+/* Element: Figure */
+.cm-lightbox__figure {
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Element: Image Wrapper */
+.cm-lightbox__image-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  max-height: 80vh;
+}
+
+/* Element: Image */
+.cm-lightbox__image {
+  max-width: 100%;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  border-radius: var(--cm-spacing-sm);
+}
+
+/* Element: Loader */
+.cm-lightbox__loader {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--cm-color-text);
+  border-radius: 50%;
+  animation: cm-lightbox-spin 0.8s linear infinite;
+}
+
+@keyframes cm-lightbox-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Element: Caption */
+.cm-lightbox__caption {
+  margin-top: var(--cm-spacing-lg);
+  color: var(--cm-color-text-muted);
+  text-align: center;
+  font-size: var(--cm-font-size-sm);
+  max-width: 600px;
+}
+
+/* Element: Navigation */
+.cm-lightbox__nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cm-spacing-lg);
+  padding: var(--cm-spacing-xl);
+  z-index: 10;
+}
+
+/* Element: Navigation Arrows */
+.cm-lightbox__prev,
+.cm-lightbox__next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--cm-color-text);
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    background var(--cm-duration-fast) var(--cm-ease-default),
+    transform var(--cm-duration-fast) var(--cm-ease-default),
+    opacity var(--cm-duration-fast) var(--cm-ease-default);
+}
+
+.cm-lightbox__prev:hover:not(:disabled),
+.cm-lightbox__next:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.cm-lightbox__prev:disabled,
+.cm-lightbox__next:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.cm-lightbox__prev:focus-visible,
+.cm-lightbox__next:focus-visible {
+  outline: 2px solid var(--cm-color-accent);
+  outline-offset: 2px;
+}
+
+.cm-lightbox__prev svg,
+.cm-lightbox__next svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Element: Counter */
+.cm-lightbox__counter {
+  color: var(--cm-color-text-muted);
+  font-size: var(--cm-font-size-sm);
+  min-width: 80px;
+  text-align: center;
+}
+
+/* Desktop: Position arrows on sides of the container */
+@media (min-width: 768px) {
+  .cm-lightbox__prev,
+  .cm-lightbox__next {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+  }
+
+  .cm-lightbox__prev {
+    left: var(--cm-spacing-xl);
+  }
+
+  .cm-lightbox__next {
+    right: var(--cm-spacing-xl);
+  }
+
+  .cm-lightbox__prev:hover:not(:disabled),
+  .cm-lightbox__next:hover:not(:disabled) {
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  /* Keep nav at bottom for the counter only */
+  .cm-lightbox__nav {
+    position: absolute;
+    bottom: var(--cm-spacing-xl);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--cm-spacing-lg);
+  }
+}
+
+/* Zoom cursor states */
+.cm-lightbox__image-wrapper[data-zoomed="false"] .cm-lightbox__image {
+  cursor: zoom-in;
+}
+
+.cm-lightbox__image-wrapper[data-zoomed="true"] .cm-lightbox__image {
+  cursor: grab;
+}
+
+.cm-lightbox__image-wrapper[data-zoomed="true"] .cm-lightbox__image:active {
+  cursor: grabbing;
+}
+
+/* ==========================================================================
+   UTILITY CLASSES
+   ========================================================================== */
+
+/* Screen reader only */
+.cm-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* No scroll (applied to body when view is open) */
+.cm-no-scroll {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   RESPONSIVE: Card styles (match original flip-card sizing)
+   ========================================================================== */
+
+@media (max-width: 991px) {
+  .cm-card {
+    height: calc(100vh - 36px);
+    min-height: 550px;
+    max-height: 800px;
+  }
+
+  .cm-card__title {
+    font-size: 48px;
+    letter-spacing: -2px;
+    line-height: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cm-card {
+    height: calc(100vh - 36px);
+    min-height: 450px;
+    max-height: 700px;
+  }
+
+  .cm-card__title {
+    font-size: 36px;
+    letter-spacing: -1.5px;
+    line-height: 36px;
+    padding: 40px 24px;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-view {
+    transition: none;
+  }
+
+  .cm-card__image {
+    transition: none;
+  }
+
+  .cm-card:hover .cm-card__image {
+    transform: none;
+  }
+
+  .cm-view__close:hover {
+    transform: none;
+  }
+
+  .cm-gallery-section__item {
+    transition: none;
+  }
+
+  .cm-gallery-section__item:hover {
+    transform: none;
+  }
+
+  .cm-gallery-nav__arrow:hover {
+    transform: translateY(-50%);
+  }
+
+  .cm-gallery-section__hint::after {
+    animation: none;
+  }
+}

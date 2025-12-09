@@ -175,8 +175,20 @@ button {
 }
 
 /* Cards Section */
+/* Cards Section - match original flip-cards-section styling */
 .cards-section {
-  padding: 0 24px 100px;
+  position: relative;
+  padding: 0 clamp(31px, 4.5vw, 68px); /* Responsive padding like original */
+  margin-bottom: 100px; /* Gap before next section */
+}
+
+/* Card gallery grid - match original flip-cards-grid styling */
+.cards-section .cm-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 65px; /* Space between cards - original value */
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .cards-hint {
