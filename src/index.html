@@ -6,6 +6,12 @@
   <title>Elite Decor - Custom Furniture Portugal</title>
   <meta name="description" content="Custom furniture designed for your home, crafted to reflect your style.">
 
+  <!-- hreflang for multi-language SEO -->
+  <link rel="alternate" hreflang="en" href="https://elitedecor.pt/">
+  <link rel="alternate" hreflang="pt" href="https://elitedecor.pt/pt/">
+  <link rel="alternate" hreflang="ru" href="https://elitedecor.pt/ru/">
+  <link rel="alternate" hreflang="x-default" href="https://elitedecor.pt/">
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +19,7 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="components/card-morph/dist/card-morph.css">
 </head>
 <body>
   <!-- Header -->
@@ -20,6 +27,11 @@
     <a href="/" class="logo">
       <img src="assets/logo.svg" alt="Elite Decor" width="40" height="40">
     </a>
+    <nav class="lang-switcher" aria-label="Language">
+      <a href="/" lang="en" hreflang="en" class="active">EN</a>
+      <a href="/pt/" lang="pt" hreflang="pt">PT</a>
+      <a href="/ru/" lang="ru" hreflang="ru">RU</a>
+    </nav>
     <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
       <span></span>
       <span></span>
@@ -35,13 +47,13 @@
           <img src="https://elitedecor.pt/wp-content/uploads/2025/11/Hero-scaled.jpg" alt="Elite Decor Showroom" loading="eager">
         </div>
         <div class="hero-slide">
-          <img src="https://elitedecor.pt/wp-content/uploads/2022/08/Essential_line-4.jpg" alt="Essential Line Collection" loading="lazy">
+          <img src="assets/collections/essense/essense-4.jpg" alt="Essential Line Collection" loading="lazy">
         </div>
         <div class="hero-slide">
-          <img src="https://elitedecor.pt/wp-content/uploads/2025/08/NOBLE1.jpeg" alt="Noble Collection 1" loading="lazy">
+          <img src="assets/collections/noble/noble-1.jpg" alt="Noble Collection 1" loading="lazy">
         </div>
         <div class="hero-slide">
-          <img src="https://elitedecor.pt/wp-content/uploads/2025/08/NOBLE9.jpeg" alt="Noble Collection 2" loading="lazy">
+          <img src="assets/collections/noble/noble-9.jpg" alt="Noble Collection 2" loading="lazy">
         </div>
       </div>
       <h1 class="hero-title">
@@ -55,80 +67,311 @@
       <h4 class="section-description split-text" data-split="chars">Custom furniture designed for your home, crafted to reflect your style and create a space that is both functional and visually stunning. Each piece is thoughtfully designed to blend seamlessly with your interior while offering comfort, practicality, and a timeless aesthetic.</h4>
     </section>
 
-    <!-- Flip Cards Section -->
-    <section class="flip-cards-section">
-      <p class="cards-hint">Click card to know more</p>
+    <!-- Card Morph Gallery Section -->
+    <section class="cards-section">
+      <p class="cards-hint">Click to explore</p>
 
-      <div class="flip-cards-grid">
+      <div class="cm-gallery" data-card-morph>
         <!-- Card 1: Exclusive Design -->
-        <article class="flip-card" tabindex="0" role="button" aria-pressed="false">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="assets/cards/exclusive-design.jpg" alt="Exclusive Design" loading="lazy">
-              <h3>Exclusive Design</h3>
-            </div>
-            <div class="flip-card-back" style="--bg-image: url('../assets/cards/exclusive-design.jpg')">
-              <div class="back-content">
-                <h1>Exclusive Design</h1>
-                <p>Every piece is uniquely crafted to reflect your personal style and lifestyle needs. Our designers work closely with you to create bespoke furniture that perfectly complements your space, ensuring no two projects are ever the same. From initial concept sketches to final execution, we bring your vision to life with thoughtful design solutions that are both functional and beautiful.</p>
-
-                <div class="gallery-carousel" role="region" aria-label="Image gallery">
-                  <button class="carousel-item" data-index="0" data-full="assets/gallery/essential-line-1.jpg">
-                    <img src="assets/gallery/essential-line-1.jpg" alt="Essential Line 1" loading="lazy">
-                  </button>
-                  <button class="carousel-item" data-index="1" data-full="assets/gallery/essential-line-2.jpg">
-                    <img src="assets/gallery/essential-line-2.jpg" alt="Essential Line 2" loading="lazy">
-                  </button>
-                  <button class="carousel-item" data-index="2" data-full="assets/gallery/essential-line-3.jpg">
-                    <img src="assets/gallery/essential-line-3.jpg" alt="Essential Line 3" loading="lazy">
-                  </button>
-                  <button class="carousel-item" data-index="3" data-full="assets/gallery/essential-line-4.jpg">
-                    <img src="assets/gallery/essential-line-4.jpg" alt="Essential Line 4" loading="lazy">
-                  </button>
-                  <button class="carousel-item" data-index="4" data-full="assets/gallery/essential-line-5.jpg">
-                    <img src="assets/gallery/essential-line-5.jpg" alt="Essential Line 5" loading="lazy">
-                  </button>
-                  <button class="carousel-item" data-index="5" data-full="assets/gallery/noble-2.jpg">
-                    <img src="assets/gallery/noble-2.jpg" alt="Noble Collection" loading="lazy">
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+        <article class="cm-card" data-cm-view-id="exclusive-design" tabindex="0" role="button" aria-label="View Exclusive Design">
+          <img class="cm-card__image" src="assets/cards/exclusive-design.jpg" alt="Exclusive Design" loading="lazy">
+          <h3 class="cm-card__title">Exclusive Design</h3>
         </article>
 
         <!-- Card 2: Quality Materials -->
-        <article class="flip-card" tabindex="0" role="button" aria-pressed="false">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="assets/cards/quality-materials.jpg" alt="Quality Materials" loading="lazy">
-              <h3>Quality Materials</h3>
-            </div>
-            <div class="flip-card-back" style="--bg-image: url('../assets/cards/quality-materials.jpg')">
-              <div class="back-content">
-                <h1>Quality Materials</h1>
-                <p>Always attentive to detail and with a multidisciplinary team focused on the client and their needs, we can create a space that adapts to your home's structure, making it an exceptional and inspiring place.</p>
-                <p>Our finishes include oak, walnut, and lacquered matte or gloss options. We have various types and colors of fabric available. Metal can have a bright, matte or painted finish. Glass and mirror can be transparent, translucent or tempered.</p>
-              </div>
-            </div>
-          </div>
+        <article class="cm-card" data-cm-view-id="quality-materials" tabindex="0" role="button" aria-label="View Quality Materials">
+          <img class="cm-card__image" src="assets/cards/quality-materials.jpg" alt="Quality Materials" loading="lazy">
+          <h3 class="cm-card__title">Quality Materials</h3>
         </article>
 
         <!-- Card 3: Delivery & Installation -->
-        <article class="flip-card" tabindex="0" role="button" aria-pressed="false">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="assets/cards/delivery-installation.jpg" alt="Delivery & Installation" loading="lazy">
-              <h3>Delivery & Installation</h3>
-            </div>
-            <div class="flip-card-back" style="--bg-image: url('../assets/cards/delivery-installation.jpg')">
-              <div class="back-content">
-                <h1>Delivery & Installation</h1>
-                <p>Our team handles the entire delivery and installation process for your furniture, with safety and attention to detail. From transport to on-site assembly, we also guarantee any assistance that may be needed.</p>
-              </div>
-            </div>
-          </div>
+        <article class="cm-card" data-cm-view-id="delivery-installation" tabindex="0" role="button" aria-label="View Delivery & Installation">
+          <img class="cm-card__image" src="assets/cards/delivery-installation.jpg" alt="Delivery & Installation" loading="lazy">
+          <h3 class="cm-card__title">Delivery & Installation</h3>
         </article>
+
+        <!-- Card 4: Noble Collection -->
+        <article class="cm-card" data-cm-view-id="noble" tabindex="0" role="button" aria-label="View Noble Collection">
+          <img class="cm-card__image" src="assets/collections/noble/hero.jpg" alt="Noble Collection" loading="lazy">
+          <h3 class="cm-card__title">Noble Collection</h3>
+        </article>
+
+        <!-- Card 5: Essense Collection -->
+        <article class="cm-card" data-cm-view-id="essense" tabindex="0" role="button" aria-label="View Essense Collection">
+          <img class="cm-card__image" src="assets/collections/essense/hero.jpg" alt="Essense Collection" loading="lazy">
+          <h3 class="cm-card__title">Essense Collection</h3>
+        </article>
+
+        <!-- ================================================================
+             CARD VIEWS
+             ================================================================ -->
+
+        <!-- Exclusive Design View -->
+        <div id="exclusive-design-view" class="cm-view" aria-hidden="true">
+          <div class="cm-view__inner">
+            <button class="cm-view__close" aria-label="Close view"></button>
+
+            <section class="cm-hero">
+              <div class="cm-hero__background">
+                <img src="assets/cards/exclusive-design.jpg" alt="">
+              </div>
+              <div class="cm-hero__content">
+                <h1 class="cm-hero__title">
+                  <span>Exclusive</span>
+                  <span>Design</span>
+                </h1>
+                <p class="cm-hero__description">Every piece is uniquely crafted to reflect your personal style and lifestyle needs.</p>
+              </div>
+            </section>
+
+            <section class="cm-info">
+              <div class="cm-info__description">
+                <h2>Crafted for You</h2>
+                <p>Our designers work closely with you to create bespoke furniture that perfectly complements your space, ensuring no two projects are ever the same. From initial concept sketches to final execution, we bring your vision to life with thoughtful design solutions that are both functional and beautiful.</p>
+                <p>We believe that furniture should tell your story. Each piece we create is a reflection of your personality, your needs, and your dreams for your space.</p>
+              </div>
+              <div class="cm-info__details">
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Process</div>
+                  <div class="cm-info__detail-value">Consultation, Design, Production</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Approach</div>
+                  <div class="cm-info__detail-value">Personalized & Bespoke</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="cm-gallery-section">
+              <div class="cm-gallery-section__track">
+                <div class="cm-gallery-section__item"><img src="assets/gallery/essential-line-1.jpg" alt="Custom Design 1" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/gallery/essential-line-2.jpg" alt="Custom Design 2" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/gallery/essential-line-3.jpg" alt="Custom Design 3" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/gallery/essential-line-4.jpg" alt="Custom Design 4" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/gallery/essential-line-5.jpg" alt="Custom Design 5" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/gallery/noble-2.jpg" alt="Custom Design 6" loading="lazy"></div>
+              </div>
+              <span class="cm-gallery-section__hint">Drag to explore</span>
+            </section>
+          </div>
+        </div>
+
+        <!-- Quality Materials View -->
+        <div id="quality-materials-view" class="cm-view" aria-hidden="true">
+          <div class="cm-view__inner">
+            <button class="cm-view__close" aria-label="Close view"></button>
+
+            <section class="cm-hero">
+              <div class="cm-hero__background">
+                <img src="assets/cards/quality-materials.jpg" alt="">
+              </div>
+              <div class="cm-hero__content">
+                <h1 class="cm-hero__title">
+                  <span>Quality</span>
+                  <span>Materials</span>
+                </h1>
+                <p class="cm-hero__description">Always attentive to detail with the finest materials available.</p>
+              </div>
+            </section>
+
+            <section class="cm-info">
+              <div class="cm-info__description">
+                <h2>Premium Selection</h2>
+                <p>Always attentive to detail and with a multidisciplinary team focused on the client and their needs, we can create a space that adapts to your home's structure, making it an exceptional and inspiring place.</p>
+                <p>Our finishes include oak, walnut, and lacquered matte or gloss options. We have various types and colors of fabric available. Metal can have a bright, matte or painted finish. Glass and mirror can be transparent, translucent or tempered.</p>
+              </div>
+              <div class="cm-info__details">
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Wood</div>
+                  <div class="cm-info__detail-value">Oak, Walnut, Lacquered</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Fabric</div>
+                  <div class="cm-info__detail-value">Various types & colors</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Metal</div>
+                  <div class="cm-info__detail-value">Bright, Matte, Painted</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Glass</div>
+                  <div class="cm-info__detail-value">Transparent, Translucent, Tempered</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="cm-gallery-section">
+              <div class="cm-gallery-section__track">
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-3.jpg" alt="Wood Material" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-4.jpg" alt="Metal Detail" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-5.jpg" alt="Finish Quality" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/essense/essense-2.jpg" alt="Material Selection" loading="lazy"></div>
+              </div>
+              <span class="cm-gallery-section__hint">Drag to explore</span>
+            </section>
+          </div>
+        </div>
+
+        <!-- Delivery & Installation View -->
+        <div id="delivery-installation-view" class="cm-view" aria-hidden="true">
+          <div class="cm-view__inner">
+            <button class="cm-view__close" aria-label="Close view"></button>
+
+            <section class="cm-hero">
+              <div class="cm-hero__background">
+                <img src="assets/cards/delivery-installation.jpg" alt="">
+              </div>
+              <div class="cm-hero__content">
+                <h1 class="cm-hero__title">
+                  <span>Delivery &</span>
+                  <span>Installation</span>
+                </h1>
+                <p class="cm-hero__description">From our workshop to your home with care and precision.</p>
+              </div>
+            </section>
+
+            <section class="cm-info">
+              <div class="cm-info__description">
+                <h2>Complete Service</h2>
+                <p>Our team handles the entire delivery and installation process for your furniture, with safety and attention to detail. From transport to on-site assembly, we also guarantee any assistance that may be needed.</p>
+                <p>We take pride in ensuring that every piece arrives in perfect condition and is installed exactly as designed, making your vision a reality in your space.</p>
+              </div>
+              <div class="cm-info__details">
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Service</div>
+                  <div class="cm-info__detail-value">Transport, Assembly, Support</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Coverage</div>
+                  <div class="cm-info__detail-value">Portugal & Europe</div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Noble Collection View -->
+        <div id="noble-view" class="cm-view" aria-hidden="true">
+          <div class="cm-view__inner">
+            <button class="cm-view__close" aria-label="Close view"></button>
+
+            <section class="cm-hero">
+              <div class="cm-hero__background">
+                <img src="assets/collections/noble/hero.jpg" alt="">
+              </div>
+              <div class="cm-hero__content">
+                <h1 class="cm-hero__title">
+                  <span>Noble</span>
+                  <span>Collection</span>
+                </h1>
+                <p class="cm-hero__description">A furniture line that celebrates the essence of modern design.</p>
+              </div>
+            </section>
+
+            <section class="cm-info">
+              <div class="cm-info__description">
+                <h2>Inspired by simplicity and sophistication.</h2>
+                <p>Noble translates the harmony between pure forms, noble materials and intelligent functionality. Each piece is created with precision to offer a perfect balance between aesthetics and comfort, elevating any environment with lightness and elegance.</p>
+                <p>With natural finishes and minimalist lines, Noble values the details that really matter, leaving the superfluous aside and focusing on what is essential. Whether for creating work, relaxation or social spaces, Noble transforms everyday life into a unique and sophisticated sensory experience, bringing beauty and practicality in every line and curve.</p>
+              </div>
+              <div class="cm-info__details">
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Year</div>
+                  <div class="cm-info__detail-value">2022</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Materials</div>
+                  <div class="cm-info__detail-value">Wood, Metal</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Services</div>
+                  <div class="cm-info__detail-value">Sketching, 3D modeling, Prototyping</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Pieces</div>
+                  <div class="cm-info__detail-value">13 Items</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="cm-gallery-section">
+              <div class="cm-gallery-section__track">
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-1.jpg" alt="Noble 1" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-2.jpg" alt="Noble 2" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-3.jpg" alt="Noble 3" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-4.jpg" alt="Noble 4" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-5.jpg" alt="Noble 5" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-6.jpg" alt="Noble 6" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-7.jpg" alt="Noble 7" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-8.jpg" alt="Noble 8" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-9.jpg" alt="Noble 9" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-10.jpg" alt="Noble 10" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-11.jpg" alt="Noble 11" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-12.jpg" alt="Noble 12" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/noble/noble-13.jpg" alt="Noble 13" loading="lazy"></div>
+              </div>
+              <span class="cm-gallery-section__hint">Drag to explore</span>
+            </section>
+          </div>
+        </div>
+
+        <!-- Essense Collection View -->
+        <div id="essense-view" class="cm-view" aria-hidden="true">
+          <div class="cm-view__inner">
+            <button class="cm-view__close" aria-label="Close view"></button>
+
+            <section class="cm-hero">
+              <div class="cm-hero__background">
+                <img src="assets/collections/essense/hero.jpg" alt="">
+              </div>
+              <div class="cm-hero__content">
+                <h1 class="cm-hero__title">
+                  <span>Essense</span>
+                  <span>Collection</span>
+                </h1>
+                <p class="cm-hero__description">A furniture line that celebrates the essence of modern design.</p>
+              </div>
+            </section>
+
+            <section class="cm-info">
+              <div class="cm-info__description">
+                <h2>Inspired by simplicity and sophistication.</h2>
+                <p>Essense translates the harmony between pure forms, noble materials and intelligent functionality. Each piece is created with precision to offer a perfect balance between aesthetics and comfort, elevating any environment with lightness and elegance.</p>
+                <p>With natural finishes and minimalist lines, Essense values the details that really matter, leaving the superfluous aside and focusing on what is essential. Whether for creating work, relaxation or social spaces, Essense transforms everyday life into a unique and sophisticated sensory experience, bringing beauty and practicality in every line and curve.</p>
+              </div>
+              <div class="cm-info__details">
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Year</div>
+                  <div class="cm-info__detail-value">2022</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Materials</div>
+                  <div class="cm-info__detail-value">Wood, Metal</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Services</div>
+                  <div class="cm-info__detail-value">Sketching, 3D modeling, Prototyping</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Pieces</div>
+                  <div class="cm-info__detail-value">5 Items</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="cm-gallery-section">
+              <div class="cm-gallery-section__track">
+                <div class="cm-gallery-section__item"><img src="assets/collections/essense/essense-1.jpg" alt="Essense 1" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/essense/essense-2.jpg" alt="Essense 2" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/essense/essense-3.jpg" alt="Essense 3" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/essense/essense-4.jpg" alt="Essense 4" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="assets/collections/essense/essense-5.jpg" alt="Essense 5" loading="lazy"></div>
+              </div>
+              <span class="cm-gallery-section__hint">Drag to explore</span>
+            </section>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -192,27 +435,18 @@
     </div>
   </footer>
 
-  <!-- Lightbox (WCAG 2.2 compliant modal) -->
-  <div class="lightbox" hidden aria-modal="true" role="dialog" aria-labelledby="lightbox-title" aria-describedby="lightbox-counter">
-    <h2 id="lightbox-title" class="sr-only">Image Gallery</h2>
-    <button class="lightbox-close" aria-label="Close gallery" type="button">&times;</button>
-    <button class="lightbox-prev" aria-label="Previous image" type="button">&larr;</button>
-    <button class="lightbox-next" aria-label="Next image" type="button">&rarr;</button>
-    <div class="lightbox-content">
-      <img src="" alt="" role="img">
-    </div>
-    <div class="lightbox-counter" id="lightbox-counter" aria-live="polite">
-      <span class="current">1</span> / <span class="total">6</span>
-    </div>
-  </div>
-
   <!-- Accessibility announcement -->
   <div class="sr-only" aria-live="polite" id="announcer"></div>
 
-  <!-- GSAP + ScrollTrigger + Lenis (Free since 2024) -->
+  <!-- GSAP + ScrollTrigger + Flip + Draggable + Lenis -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Flip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <!-- Card Morph Component -->
+  <script src="components/card-morph/dist/card-morph.js"></script>
 
   <!-- App -->
   <script src="js/app.js"></script>

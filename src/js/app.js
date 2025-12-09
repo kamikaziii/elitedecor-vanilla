@@ -106,61 +106,23 @@
   }
 
   // ==========================================================================
-  // Flip Card Component
+  // Card Morph Component Initialization
   // ==========================================================================
 
-  class FlipCard {
-    constructor(element) {
-      this.el = element;
-      this.isFlipped = false;
-      this.bindEvents();
+  function initCardMorph() {
+    if (typeof CardMorph === 'undefined') {
+      console.warn('CardMorph not loaded');
+      return null;
     }
 
-    bindEvents() {
-      this.el.addEventListener('click', (e) => {
-        if (!e.target.closest('.gallery-carousel')) {
-          this.toggle();
-        }
-      });
-
-      this.el.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          this.toggle();
-        }
-        if (e.key === 'Escape' && this.isFlipped) {
-          this.close();
-        }
-      });
-
-      const carouselItems = this.el.querySelectorAll('.carousel-item');
-      carouselItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const images = Array.from(carouselItems).map(btn => btn.dataset.full);
-          const index = parseInt(item.dataset.index, 10);
-          if (window.lightbox) {
-            window.lightbox.open(images, index);
-          }
-        });
-      });
-    }
-
-    toggle() {
-      this.isFlipped = !this.isFlipped;
-      this.el.classList.toggle('flipped', this.isFlipped);
-      this.el.setAttribute('aria-pressed', this.isFlipped);
-      announce(this.isFlipped ? 'Card flipped, showing details' : 'Card flipped back');
-    }
-
-    close() {
-      if (this.isFlipped) {
-        this.isFlipped = false;
-        this.el.classList.remove('flipped');
-        this.el.setAttribute('aria-pressed', 'false');
-        announce('Card closed');
-      }
-    }
+    return CardMorph.initAll('[data-card-morph]', {
+      duration: 0.6,
+      smoothScroll: false, // Using our own Lenis instance
+      cardStacking: true,
+      lightbox: true,
+      keyboard: true,
+      draggable: true
+    });
   }
 
   // ==========================================================================
@@ -393,7 +355,7 @@
 
     // Cards hint visibility
     const cardsHint = document.querySelector('.cards-hint');
-    const cardsSection = document.querySelector('.flip-cards-section');
+    const cardsSection = document.querySelector('.cards-section');
     if (cardsHint && cardsSection) {
       ScrollTrigger.create({
         trigger: cardsSection,
@@ -451,7 +413,7 @@
   // ==========================================================================
 
   function initCardStacking() {
-    const cards = gsap.utils.toArray('.flip-card');
+    const cards = gsap.utils.toArray('.cm-card');
 
     if (cards.length === 0) return;
 
@@ -541,10 +503,10 @@
     // Split text for letter animations
     initSplitText();
 
-    // Initialize flip cards
-    document.querySelectorAll('.flip-card').forEach(el => new FlipCard(el));
+    // Initialize Card Morph component
+    initCardMorph();
 
-    // Initialize lightbox
+    // Initialize lightbox (fallback for non-card-morph content)
     window.lightbox = new Lightbox();
 
     // Initialize Lenis smooth scroll
@@ -553,17 +515,7 @@
     // Initialize scroll animations
     initScrollAnimations();
 
-    // Close flipped cards when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.flip-card')) {
-        document.querySelectorAll('.flip-card.flipped').forEach(card => {
-          card.classList.remove('flipped');
-          card.setAttribute('aria-pressed', 'false');
-        });
-      }
-    });
-
-    console.log('Elite Decor Replica initialized (GSAP + Lenis)');
+    console.log('Elite Decor initialized with Card Morph (GSAP + Lenis)');
   });
 
 })();

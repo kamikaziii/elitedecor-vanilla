@@ -153,6 +153,41 @@ button {
   transition: transform 0.3s ease;
 }
 
+/* Language Switcher */
+.lang-switcher {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.lang-switcher a {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s ease;
+}
+
+.lang-switcher a:hover,
+.lang-switcher a.active {
+  color: var(--text-white);
+}
+
+/* Cards Section */
+.cards-section {
+  padding: 0 24px 100px;
+}
+
+.cards-hint {
+  text-align: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 24px;
+}
+
 /* --------------------------------------------------------------------------
    Hero Section
    -------------------------------------------------------------------------- */

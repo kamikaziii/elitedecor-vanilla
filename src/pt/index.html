@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elite Decor - Mobiliario Personalizado Portugal</title>
+  <meta name="description" content="Mobiliario personalizado desenhado para a sua casa, criado para refletir o seu estilo.">
+
+  <!-- hreflang for multi-language SEO -->
+  <link rel="alternate" hreflang="en" href="https://elitedecor.pt/">
+  <link rel="alternate" hreflang="pt" href="https://elitedecor.pt/pt/">
+  <link rel="alternate" hreflang="ru" href="https://elitedecor.pt/ru/">
+  <link rel="alternate" hreflang="x-default" href="https://elitedecor.pt/">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../components/card-morph/dist/card-morph.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <a href="/pt/" class="logo">
+      <img src="../assets/logo.svg" alt="Elite Decor" width="40" height="40">
+    </a>
+    <nav class="lang-switcher" aria-label="Idioma">
+      <a href="/" lang="en" hreflang="en">EN</a>
+      <a href="/pt/" lang="pt" hreflang="pt" class="active">PT</a>
+      <a href="/ru/" lang="ru" hreflang="ru">RU</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <main>
+    <!-- Hero Section with cycling background images -->
+    <section class="hero">
+      <div class="hero-slideshow">
+        <div class="hero-slide active">
+          <img src="https://elitedecor.pt/wp-content/uploads/2025/11/Hero-scaled.jpg" alt="Showroom Elite Decor" loading="eager">
+        </div>
+        <div class="hero-slide">
+          <img src="../assets/collections/essense/essense-4.jpg" alt="Colecao Essential Line" loading="lazy">
+        </div>
+        <div class="hero-slide">
+          <img src="../assets/collections/noble/noble-1.jpg" alt="Colecao Noble 1" loading="lazy">
+        </div>
+        <div class="hero-slide">
+          <img src="../assets/collections/noble/noble-9.jpg" alt="Colecao Noble 2" loading="lazy">
+        </div>
+      </div>
+      <h1 class="hero-title">
+        <span>E</span><span>L</span><span>I</span><span>T</span><span>E</span><span>D</span><span>E</span><span>C</span><span>O</span><span>R</span>
+      </h1>
+    </section>
+
+    <!-- What We Do Section -->
+    <section class="what-we-do">
+      <h3 class="section-label">O Que Fazemos</h3>
+      <h4 class="section-description split-text" data-split="chars">Mobiliario personalizado desenhado para a sua casa, criado para refletir o seu estilo e criar um espaco que e funcional e visualmente deslumbrante. Cada peca e cuidadosamente concebida para se integrar perfeitamente no seu interior, oferecendo conforto, praticidade e uma estetica intemporal.</h4>
+    </section>
+
+    <!-- Card Morph Gallery Section -->
+    <section class="cards-section">
+      <p class="cards-hint">Clique para explorar</p>
+
+      <div class="cm-gallery" data-card-morph>
+        <!-- Card 1: Exclusive Design -->
+        <article class="cm-card" data-cm-view-id="exclusive-design" tabindex="0" role="button" aria-label="Ver Design Exclusivo">
+          <img class="cm-card__image" src="../assets/cards/exclusive-design.jpg" alt="Design Exclusivo" loading="lazy">
+          <h3 class="cm-card__title">Design Exclusivo</h3>
+        </article>
+
+        <!-- Card 2: Quality Materials -->
+        <article class="cm-card" data-cm-view-id="quality-materials" tabindex="0" role="button" aria-label="Ver Materiais de Qualidade">
+          <img class="cm-card__image" src="../assets/cards/quality-materials.jpg" alt="Materiais de Qualidade" loading="lazy">
+          <h3 class="cm-card__title">Materiais de Qualidade</h3>
+        </article>
+
+        <!-- Card 3: Delivery & Installation -->
+        <article class="cm-card" data-cm-view-id="delivery-installation" tabindex="0" role="button" aria-label="Ver Entrega e Instalacao">
+          <img class="cm-card__image" src="../assets/cards/delivery-installation.jpg" alt="Entrega e Instalacao" loading="lazy">
+          <h3 class="cm-card__title">Entrega e Instalacao</h3>
+        </article>
+
+        <!-- Card 4: Noble Collection -->
+        <article class="cm-card" data-cm-view-id="noble" tabindex="0" role="button" aria-label="Ver Colecao Noble">
+          <img class="cm-card__image" src="../assets/collections/noble/hero.jpg" alt="Colecao Noble" loading="lazy">
+          <h3 class="cm-card__title">Colecao Noble</h3>
+        </article>
+
+        <!-- Card 5: Essense Collection -->
+        <article class="cm-card" data-cm-view-id="essense" tabindex="0" role="button" aria-label="Ver Colecao Essense">
+          <img class="cm-card__image" src="../assets/collections/essense/hero.jpg" alt="Colecao Essense" loading="lazy">
+          <h3 class="cm-card__title">Colecao Essense</h3>
+        </article>
+
+        <!-- ================================================================
+             CARD VIEWS
+             ================================================================ -->
+
+        <!-- Exclusive Design View -->
+        <div id="exclusive-design-view" class="cm-view" aria-hidden="true">
+          <div class="cm-view__inner">
+            <button class="cm-view__close" aria-label="Fechar vista"></button>
+
+            <section class="cm-hero">
+              <div class="cm-hero__background">
+                <img src="../assets/cards/exclusive-design.jpg" alt="">
+              </div>
+              <div class="cm-hero__content">
+                <h1 class="cm-hero__title">
+                  <span>Design</span>
+                  <span>Exclusivo</span>
+                </h1>
+                <p class="cm-hero__description">Cada peca e criada de forma unica para refletir o seu estilo pessoal e as suas necessidades.</p>
+              </div>
+            </section>
+
+            <section class="cm-info">
+              <div class="cm-info__description">
+                <h2>Criado Para Si</h2>
+                <p>Os nossos designers trabalham consigo para criar mobiliario personalizado que complementa perfeitamente o seu espaco, garantindo que nao ha dois projetos iguais. Desde os esbocos iniciais ate a execucao final, damos vida a sua visao com solucoes de design funcionais e bonitas.</p>
+                <p>Acreditamos que o mobiliario deve contar a sua historia. Cada peca que criamos e um reflexo da sua personalidade, das suas necessidades e dos seus sonhos para o seu espaco.</p>
+              </div>
+              <div class="cm-info__details">
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Processo</div>
+                  <div class="cm-info__detail-value">Consultoria, Design, Producao</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Abordagem</div>
+                  <div class="cm-info__detail-value">Personalizado e Exclusivo</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="cm-gallery-section">
+              <div class="cm-gallery-section__track">
+                <div class="cm-gallery-section__item"><img src="../assets/gallery/essential-line-1.jpg" alt="Design Personalizado 1" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/gallery/essential-line-2.jpg" alt="Design Personalizado 2" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/gallery/essential-line-3.jpg" alt="Design Personalizado 3" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/gallery/essential-line-4.jpg" alt="Design Personalizado 4" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/gallery/essential-line-5.jpg" alt="Design Personalizado 5" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/gallery/noble-2.jpg" alt="Design Personalizado 6" loading="lazy"></div>
+              </div>
+              <span class="cm-gallery-section__hint">Arraste para explorar</span>
+            </section>
+          </div>
+        </div>
+
+        <!-- Quality Materials View -->
+        <div id="quality-materials-view" class="cm-view" aria-hidden="true">
+          <div class="cm-view__inner">
+            <button class="cm-view__close" aria-label="Fechar vista"></button>
+
+            <section class="cm-hero">
+              <div class="cm-hero__background">
+                <img src="../assets/cards/quality-materials.jpg" alt="">
+              </div>
+              <div class="cm-hero__content">
+                <h1 class="cm-hero__title">
+                  <span>Materiais de</span>
+                  <span>Qualidade</span>
+                </h1>
+                <p class="cm-hero__description">Sempre atentos ao detalhe com os melhores materiais disponiveis.</p>
+              </div>
+            </section>
+
+            <section class="cm-info">
+              <div class="cm-info__description">
+                <h2>Selecao Premium</h2>
+                <p>Sempre atentos ao detalhe e com uma equipa multidisciplinar focada no cliente e nas suas necessidades, conseguimos criar um espaco que se adapta a estrutura da sua casa, tornando-a num lugar excecional e inspirador.</p>
+                <p>Os nossos acabamentos incluem carvalho, nogueira e opcoes lacadas mate ou brilhantes. Temos varios tipos e cores de tecido disponiveis. O metal pode ter acabamento brilhante, mate ou pintado. O vidro e espelho podem ser transparentes, translucidos ou temperados.</p>
+              </div>
+              <div class="cm-info__details">
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Madeira</div>
+                  <div class="cm-info__detail-value">Carvalho, Nogueira, Lacado</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Tecido</div>
+                  <div class="cm-info__detail-value">Varios tipos e cores</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Metal</div>
+                  <div class="cm-info__detail-value">Brilhante, Mate, Pintado</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Vidro</div>
+                  <div class="cm-info__detail-value">Transparente, Translucido, Temperado</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="cm-gallery-section">
+              <div class="cm-gallery-section__track">
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-3.jpg" alt="Material Madeira" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-4.jpg" alt="Detalhe Metal" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-5.jpg" alt="Qualidade Acabamento" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/essense/essense-2.jpg" alt="Selecao Materiais" loading="lazy"></div>
+              </div>
+              <span class="cm-gallery-section__hint">Arraste para explorar</span>
+            </section>
+          </div>
+        </div>
+
+        <!-- Delivery & Installation View -->
+        <div id="delivery-installation-view" class="cm-view" aria-hidden="true">
+          <div class="cm-view__inner">
+            <button class="cm-view__close" aria-label="Fechar vista"></button>
+
+            <section class="cm-hero">
+              <div class="cm-hero__background">
+                <img src="../assets/cards/delivery-installation.jpg" alt="">
+              </div>
+              <div class="cm-hero__content">
+                <h1 class="cm-hero__title">
+                  <span>Entrega e</span>
+                  <span>Instalacao</span>
+                </h1>
+                <p class="cm-hero__description">Da nossa oficina para a sua casa com cuidado e precisao.</p>
+              </div>
+            </section>
+
+            <section class="cm-info">
+              <div class="cm-info__description">
+                <h2>Servico Completo</h2>
+                <p>A nossa equipa trata de todo o processo de entrega e instalacao do seu mobiliario, com seguranca e atencao ao detalhe. Desde o transporte ate a montagem no local, garantimos tambem qualquer assistencia que possa ser necessaria.</p>
+                <p>Orgulhamo-nos de garantir que cada peca chega em perfeitas condicoes e e instalada exatamente como foi concebida, tornando a sua visao uma realidade no seu espaco.</p>
+              </div>
+              <div class="cm-info__details">
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Servico</div>
+                  <div class="cm-info__detail-value">Transporte, Montagem, Suporte</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Cobertura</div>
+                  <div class="cm-info__detail-value">Portugal e Europa</div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Noble Collection View -->
+        <div id="noble-view" class="cm-view" aria-hidden="true">
+          <div class="cm-view__inner">
+            <button class="cm-view__close" aria-label="Fechar vista"></button>
+
+            <section class="cm-hero">
+              <div class="cm-hero__background">
+                <img src="../assets/collections/noble/hero.jpg" alt="">
+              </div>
+              <div class="cm-hero__content">
+                <h1 class="cm-hero__title">
+                  <span>Colecao</span>
+                  <span>Noble</span>
+                </h1>
+                <p class="cm-hero__description">Uma linha de mobiliario que celebra a essencia do design moderno.</p>
+              </div>
+            </section>
+
+            <section class="cm-info">
+              <div class="cm-info__description">
+                <h2>Inspirada pela simplicidade e sofisticacao.</h2>
+                <p>Noble traduz a harmonia entre formas puras, materiais nobres e funcionalidade inteligente. Cada peca e criada com precisao para oferecer um equilibrio perfeito entre estetica e conforto, elevando qualquer ambiente com leveza e elegancia.</p>
+                <p>Com acabamentos naturais e linhas minimalistas, Noble valoriza os detalhes que realmente importam, deixando de lado o superfluo e focando no essencial. Seja para criar espacos de trabalho, relaxamento ou convivio, Noble transforma o dia a dia numa experiencia sensorial unica e sofisticada.</p>
+              </div>
+              <div class="cm-info__details">
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Ano</div>
+                  <div class="cm-info__detail-value">2022</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Materiais</div>
+                  <div class="cm-info__detail-value">Madeira, Metal</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Servicos</div>
+                  <div class="cm-info__detail-value">Esbocos, Modelagem 3D, Prototipagem</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Pecas</div>
+                  <div class="cm-info__detail-value">13 Itens</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="cm-gallery-section">
+              <div class="cm-gallery-section__track">
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-1.jpg" alt="Noble 1" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-2.jpg" alt="Noble 2" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-3.jpg" alt="Noble 3" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-4.jpg" alt="Noble 4" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-5.jpg" alt="Noble 5" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-6.jpg" alt="Noble 6" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-7.jpg" alt="Noble 7" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-8.jpg" alt="Noble 8" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-9.jpg" alt="Noble 9" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-10.jpg" alt="Noble 10" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-11.jpg" alt="Noble 11" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-12.jpg" alt="Noble 12" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/noble/noble-13.jpg" alt="Noble 13" loading="lazy"></div>
+              </div>
+              <span class="cm-gallery-section__hint">Arraste para explorar</span>
+            </section>
+          </div>
+        </div>
+
+        <!-- Essense Collection View -->
+        <div id="essense-view" class="cm-view" aria-hidden="true">
+          <div class="cm-view__inner">
+            <button class="cm-view__close" aria-label="Fechar vista"></button>
+
+            <section class="cm-hero">
+              <div class="cm-hero__background">
+                <img src="../assets/collections/essense/hero.jpg" alt="">
+              </div>
+              <div class="cm-hero__content">
+                <h1 class="cm-hero__title">
+                  <span>Colecao</span>
+                  <span>Essense</span>
+                </h1>
+                <p class="cm-hero__description">Uma linha de mobiliario que celebra a essencia do design moderno.</p>
+              </div>
+            </section>
+
+            <section class="cm-info">
+              <div class="cm-info__description">
+                <h2>Inspirada pela simplicidade e sofisticacao.</h2>
+                <p>Essense traduz a harmonia entre formas puras, materiais nobres e funcionalidade inteligente. Cada peca e criada com precisao para oferecer um equilibrio perfeito entre estetica e conforto, elevando qualquer ambiente com leveza e elegancia.</p>
+                <p>Com acabamentos naturais e linhas minimalistas, Essense valoriza os detalhes que realmente importam, deixando de lado o superfluo e focando no essencial. Seja para criar espacos de trabalho, relaxamento ou convivio, Essense transforma o dia a dia numa experiencia sensorial unica e sofisticada.</p>
+              </div>
+              <div class="cm-info__details">
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Ano</div>
+                  <div class="cm-info__detail-value">2022</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Materiais</div>
+                  <div class="cm-info__detail-value">Madeira, Metal</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Servicos</div>
+                  <div class="cm-info__detail-value">Esbocos, Modelagem 3D, Prototipagem</div>
+                </div>
+                <div class="cm-info__detail">
+                  <div class="cm-info__detail-label">Pecas</div>
+                  <div class="cm-info__detail-value">5 Itens</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="cm-gallery-section">
+              <div class="cm-gallery-section__track">
+                <div class="cm-gallery-section__item"><img src="../assets/collections/essense/essense-1.jpg" alt="Essense 1" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/essense/essense-2.jpg" alt="Essense 2" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/essense/essense-3.jpg" alt="Essense 3" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/essense/essense-4.jpg" alt="Essense 4" loading="lazy"></div>
+                <div class="cm-gallery-section__item"><img src="../assets/collections/essense/essense-5.jpg" alt="Essense 5" loading="lazy"></div>
+              </div>
+              <span class="cm-gallery-section__hint">Arraste para explorar</span>
+            </section>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+      <h1 class="section-title">Como Funciona</h1>
+
+      <div class="steps">
+        <hr class="step-divider">
+
+        <div class="step">
+          <span class="step-number">01</span>
+          <span class="step-title">Consulta e Visao</span>
+          <span class="step-description">Diga-nos o que precisa! Partilhe as suas ideias, dimensoes do espaco e preferencias de estilo.</span>
+        </div>
+
+        <hr class="step-divider">
+
+        <div class="step">
+          <span class="step-number">02</span>
+          <span class="step-title">Design e Materiais Personalizados</span>
+          <span class="step-description">Criamos um design a medida e ajudamos a escolher os melhores materiais e acabamentos.</span>
+        </div>
+
+        <hr class="step-divider">
+
+        <div class="step">
+          <span class="step-number">03</span>
+          <span class="step-title">Precisao e Artesanato</span>
+          <span class="step-description">Os nossos artesaos criam o seu mobiliario com atencao meticulosa ao detalhe.</span>
+        </div>
+
+        <hr class="step-divider">
+
+        <div class="step">
+          <span class="step-number">04</span>
+          <span class="step-title">Entrega e Instalacao</span>
+          <span class="step-description">Garantimos uma entrega sem problemas e instalacao profissional na sua casa.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <hr class="footer-divider">
+    <div class="footer-content">
+      <div class="footer-contact">
+        <h6>
+          <a href="mailto:geral@elitedecor.pt">geral@elitedecor.pt</a>
+          <span class="phone">+351 917 591 176</span>
+        </h6>
+      </div>
+      <div class="social-links">
+        <a href="https://www.instagram.com/elitedecor.pt/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/elitedecor.pt/" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </div>
+    <div class="footer-cta">
+      <a href="mailto:geral@elitedecor.pt">Vamos conversar!</a>
+    </div>
+  </footer>
+
+  <!-- Accessibility announcement -->
+  <div class="sr-only" aria-live="polite" id="announcer"></div>
+
+  <!-- GSAP + ScrollTrigger + Flip + Draggable + Lenis -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Flip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <!-- Card Morph Component -->
+  <script src="../components/card-morph/dist/card-morph.js"></script>
+
+  <!-- App -->
+  <script src="../js/app.js"></script>
+</body>
+</html>

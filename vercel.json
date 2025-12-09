@@ -1,3 +1,24 @@
 {
-  "outputDirectory": "src"
+  "outputDirectory": "src",
+  "cleanUrls": true,
+  "trailingSlash": true,
+  "rewrites": [
+    { "source": "/pt", "destination": "/pt/index.html" },
+    { "source": "/ru", "destination": "/ru/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    }
+  ]
 }
