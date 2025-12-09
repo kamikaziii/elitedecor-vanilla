@@ -6,9 +6,12 @@
   <title>Elite Decor - Мебель на заказ Португалия</title>
   <meta name="description" content="Мебель на заказ, созданная для вашего дома, чтобы отразить ваш стиль.">
 
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://elitedecor.pt/ru/">
+
   <!-- hreflang for multi-language SEO -->
-  <link rel="alternate" hreflang="en" href="https://elitedecor.pt/">
-  <link rel="alternate" hreflang="pt" href="https://elitedecor.pt/pt/">
+  <link rel="alternate" hreflang="en" href="https://elitedecor.pt/en/">
+  <link rel="alternate" hreflang="pt" href="https://elitedecor.pt/">
   <link rel="alternate" hreflang="ru" href="https://elitedecor.pt/ru/">
   <link rel="alternate" hreflang="x-default" href="https://elitedecor.pt/">
 
@@ -20,6 +23,9 @@
   <!-- Styles -->
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="../components/card-morph/dist/card-morph.css">
+
+  <!-- Language Detection (runs before page render) -->
+  <script src="../js/lang-detect.js"></script>
 </head>
 <body>
   <!-- Header -->
@@ -28,9 +34,9 @@
       <img src="../assets/logo.svg" alt="Elite Decor" width="40" height="40">
     </a>
     <nav class="lang-switcher" aria-label="Язык">
-      <a href="/" lang="en" hreflang="en">EN</a>
-      <a href="/pt/" lang="pt" hreflang="pt">PT</a>
-      <a href="/ru/" lang="ru" hreflang="ru" class="active">RU</a>
+      <a href="/en/" lang="en" hreflang="en" title="English">EN</a>
+      <a href="/" lang="pt" hreflang="pt" title="Português">PT</a>
+      <a href="/ru/" lang="ru" hreflang="ru" class="active" aria-current="page" title="Русский">RU</a>
     </nav>
     <button class="menu-toggle" aria-label="Открыть меню" aria-expanded="false">
       <span></span>

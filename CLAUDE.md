@@ -27,18 +27,24 @@ Visit: `http://localhost:8000`
 
 ```
 src/
-├── index.html          # English (default)
-├── pt/index.html       # Portuguese
-├── ru/index.html       # Russian
+├── index.html          # Portuguese (default at /)
+├── en/index.html       # English (at /en/)
+├── ru/index.html       # Russian (at /ru/)
+├── js/
+│   ├── app.js          # Main app logic
+│   └── lang-detect.js  # Browser language detection
 ├── assets/             # Shared assets (all languages use same images)
 ├── css/                # Shared styles
-├── js/                 # Shared JavaScript
-└── components/         # Shared components
+├── components/         # Shared components
+└── sitemap.xml         # SEO sitemap with hreflang
 ```
 
+- **Default language**: Portuguese (served at root `/`)
 - Language switcher in header: `<nav class="lang-switcher">`
 - hreflang tags for SEO: `<link rel="alternate" hreflang="...">`
-- Vercel rewrites handle `/pt` and `/ru` routing (see `vercel.json`)
+- Canonical URLs on all pages: `<link rel="canonical" href="...">`
+- Automatic language detection via `lang-detect.js` (localStorage-based)
+- Vercel rewrites handle `/en` and `/ru` routing (see `vercel.json`)
 
 ### Assets Organization
 
@@ -99,7 +105,7 @@ CardMorph.initAll('[data-card-morph]', { duration: 0.6, smoothScroll: false });
 
 - **Platform**: Vercel
 - **Output directory**: `src/`
-- **Rewrites**: `/pt` → `/pt/index.html`, `/ru` → `/ru/index.html`
+- **Rewrites**: `/en` → `/en/index.html`, `/ru` → `/ru/index.html`
 - **Clean URLs**: Enabled (no `.html` extensions)
 - **Trailing slash**: Enabled
 
@@ -107,11 +113,13 @@ CardMorph.initAll('[data-card-morph]', { duration: 0.6, smoothScroll: false });
 
 | File | Purpose |
 |------|---------|
-| `src/index.html` | English homepage |
-| `src/pt/index.html` | Portuguese homepage |
+| `src/index.html` | Portuguese homepage (default) |
+| `src/en/index.html` | English homepage |
 | `src/ru/index.html` | Russian homepage |
 | `src/js/app.js` | Main app logic (IIFE pattern) |
+| `src/js/lang-detect.js` | Browser language detection + localStorage |
 | `src/css/styles.css` | Global styles |
+| `src/sitemap.xml` | SEO sitemap with hreflang annotations |
 | `src/components/card-morph/dist/card-morph.js` | Card morph component |
 | `src/components/card-morph/dist/card-morph.css` | Card morph styles |
 | `vercel.json` | Deployment configuration |
@@ -146,7 +154,9 @@ CardMorph.initAll('[data-card-morph]', { duration: 0.6, smoothScroll: false });
 ## Gotchas
 
 - Images: Mix of local assets and elitedecor.pt CDN URLs (legacy)
-- Language versions: Must manually update all 3 HTML files
+- Language versions: Must manually update all 3 HTML files when content changes
 - Card morph views: View IDs must match `data-cm-view-id` attributes
 - Draggable galleries: Require GSAP Draggable plugin (CDN)
 - Smooth scroll: Lenis instance managed by CardMorph when `smoothScroll: true`
+- Language detection: Uses localStorage (`elite-decor-lang` key) to store user preference
+- Portuguese diacritics: Ensure all Portuguese text includes proper accents (ç, ã, á, é, etc.)

@@ -3,7 +3,7 @@
   "cleanUrls": true,
   "trailingSlash": true,
   "rewrites": [
-    { "source": "/pt", "destination": "/pt/index.html" },
+    { "source": "/en", "destination": "/en/index.html" },
     { "source": "/ru", "destination": "/ru/index.html" }
   ],
   "headers": [
