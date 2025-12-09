@@ -152,13 +152,39 @@
   line-height: 1.1;
   color: var(--cm-color-text);
   text-align: center;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  /* Enhanced text shadow for better contrast (2025 best practice) */
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 8px 40px rgba(0, 0, 0, 0.3);
   pointer-events: none;
   z-index: 2;
   margin: 0;
 }
 
-/* Element: Card Overlay (optional gradient) */
+/* Element: Card Overlay - Auto-applied eased gradient for text contrast
+   Uses smooth multi-stop gradient (2025 best practice from Ahmad Shadeed) */
+.cm-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  /* Eased gradient - smooth transition for natural look */
+  background: linear-gradient(
+    to top,
+    hsla(0, 0%, 0%, 0.7) 0%,
+    hsla(0, 0%, 0%, 0.55) 15%,
+    hsla(0, 0%, 0%, 0.4) 30%,
+    hsla(0, 0%, 0%, 0.25) 45%,
+    hsla(0, 0%, 0%, 0.15) 55%,
+    hsla(0, 0%, 0%, 0.08) 70%,
+    hsla(0, 0%, 0%, 0.02) 85%,
+    transparent 100%
+  );
+}
+
+/* Element: Card Overlay (legacy class - kept for backwards compatibility) */
 .cm-card__overlay {
   position: absolute;
   inset: 0;
@@ -285,6 +311,29 @@
   object-fit: cover;
 }
 
+/* Element: Hero Overlay - Eased gradient for text contrast (2025 best practice)
+   Radial gradient from center creates natural vignette effect */
+.cm-hero__background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Layered gradients: radial vignette + bottom gradient for text */
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 50% 40%,
+      transparent 0%,
+      hsla(0, 0%, 0%, 0.15) 60%,
+      hsla(0, 0%, 0%, 0.4) 100%
+    ),
+    linear-gradient(
+      to top,
+      hsla(0, 0%, 0%, 0.6) 0%,
+      hsla(0, 0%, 0%, 0.3) 30%,
+      transparent 60%
+    );
+}
+
 /* Element: Hero Content */
 .cm-hero__content {
   position: relative;
@@ -301,6 +350,11 @@
   color: var(--cm-color-text);
   line-height: 1;
   margin: 0 0 var(--cm-spacing-xl);
+  /* Enhanced text shadow for contrast over images */
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    0 8px 50px rgba(0, 0, 0, 0.3);
 }
 
 .cm-hero__title span {
@@ -314,6 +368,49 @@
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+  /* Subtle text shadow for readability */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Element: Hero Scroll Indicator */
+.cm-hero__scroll-indicator {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  cursor: pointer;
+  opacity: 0;
+  animation: cm-fadeSlideIn 0.6s ease-out 0.4s forwards, cm-bounceContainer 2s infinite ease-in-out 0.4s;
+}
+
+.cm-hero__scroll-indicator span {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-right: 2px solid rgba(255, 255, 255, 0.8);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+  transform: rotate(45deg);
+}
+
+@keyframes cm-fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes cm-bounceContainer {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(8px);
+  }
 }
 
 /* ==========================================================================
@@ -682,6 +779,9 @@
   user-select: none;
   -webkit-user-drag: none;
   border-radius: var(--cm-spacing-sm);
+  outline: none;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Element: Loader */
@@ -875,6 +975,89 @@
     letter-spacing: -1.5px;
     line-height: 36px;
     padding: 40px 24px;
+  }
+
+  /* Gallery section mobile fixes */
+  .cm-gallery-section {
+    height: 50vh;
+    min-height: 280px;
+    max-height: 380px;
+  }
+
+  .cm-gallery-section__track {
+    padding: 20px;
+    padding-right: 40px;
+    gap: 12px;
+  }
+
+  .cm-gallery-section__item {
+    height: calc(100% - 40px);
+    max-width: 75vw;
+    border-radius: 12px;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .cm-gallery-section__item:focus {
+    outline: none;
+  }
+
+  .cm-gallery-section__item img {
+    height: 100%;
+    width: auto;
+    max-width: none;
+    outline: none;
+    border: none;
+  }
+
+  .cm-gallery-section__hint {
+    bottom: 20px;
+    font-size: 10px;
+  }
+
+  /* Lightbox mobile fixes */
+  .cm-lightbox__main {
+    padding: 60px 16px;
+  }
+
+  .cm-lightbox__image-wrapper {
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 180px);
+  }
+
+  .cm-lightbox__image {
+    max-width: 100%;
+    max-height: calc(100vh - 180px);
+    width: auto;
+    height: auto;
+    border-radius: var(--cm-spacing-xs);
+  }
+
+  .cm-lightbox__nav {
+    padding: var(--cm-spacing-md);
+    gap: var(--cm-spacing-md);
+  }
+
+  .cm-lightbox__prev,
+  .cm-lightbox__next {
+    width: 44px;
+    height: 44px;
+  }
+
+  .cm-lightbox__prev svg,
+  .cm-lightbox__next svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cm-lightbox__close {
+    width: 40px;
+    height: 40px;
+  }
+
+  .cm-lightbox__close svg {
+    width: 20px;
+    height: 20px;
   }
 }
 
