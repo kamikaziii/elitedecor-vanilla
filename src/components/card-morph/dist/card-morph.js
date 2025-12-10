@@ -809,6 +809,9 @@
     /** @type {Object|null} Active draggable */
     #activeDraggable = null;
 
+    /** @type {boolean} Flag to prevent race condition in draggable creation */
+    #draggableCreating = false;
+
     /** @type {Element|null} Gallery navigation container */
     #galleryNavContainer = null;
 
@@ -1067,8 +1070,12 @@
         this.#updateHash(viewId);
       }
 
-      // Stop Lenis
-      this.#lenis?.stop();
+      // Stop Lenis with error handling
+      try {
+        this.#lenis?.stop();
+      } catch (e) {
+        console.warn('CardMorph: Error stopping Lenis', e);
+      }
 
       // Lock body scroll
       document.body.style.overflow = 'hidden';
@@ -1174,8 +1181,12 @@
       // Restore scroll position
       window.scrollTo(0, this.scrollPosition);
 
-      // Resume Lenis
-      this.#lenis?.start();
+      // Resume Lenis with error handling
+      try {
+        this.#lenis?.start();
+      } catch (e) {
+        console.warn('CardMorph: Error starting Lenis', e);
+      }
 
       // Return focus
       this.activeCard?.focus();
@@ -1261,15 +1272,28 @@
         this.#clearHash();
       }
 
+      // Safety timeout to ensure Lenis is restarted even if animation fails
+      const safetyTimeout = setTimeout(() => {
+        if (this.activeView) {
+          console.warn('CardMorph: Close animation timed out, forcing cleanup');
+          this.#finalizeClose(view);
+        }
+      }, 1000);
+
+      const cleanupAndFinalize = () => {
+        clearTimeout(safetyTimeout);
+        this.#finalizeClose(view);
+      };
+
       if (!this.#isReducedMotion()) {
         gsap.to(view, {
           opacity: 0,
           duration: 0.3,
           ease: 'power2.in',
-          onComplete: () => this.#finalizeClose(view)
+          onComplete: cleanupAndFinalize
         });
       } else {
-        this.#finalizeClose(view);
+        cleanupAndFinalize();
       }
     }
 
@@ -1304,14 +1328,26 @@
         this.#initLightbox(gallery, images);
       }
 
-      // Wait for images to load
+      // Wait for images to load with debounced draggable creation
       let loadedCount = 0;
       const totalImages = images.length;
+      let createScheduled = false;
+
+      const scheduleCreateDraggable = () => {
+        if (createScheduled) return;
+        createScheduled = true;
+        // Use double rAF to ensure DOM is fully ready (especially on mobile)
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            this.#createDraggable(gallery);
+          });
+        });
+      };
 
       const onImageReady = () => {
         loadedCount++;
         if (loadedCount >= totalImages) {
-          this.#createDraggable(gallery);
+          scheduleCreateDraggable();
         }
       };
 
@@ -1324,12 +1360,12 @@
         }
       });
 
-      // Fallback
+      // Fallback timeout (reduced from 2s to 1s for better UX)
       setTimeout(() => {
-        if (loadedCount < totalImages && !this.#activeDraggable) {
-          this.#createDraggable(gallery);
+        if (!this.#activeDraggable && !this.#draggableCreating) {
+          scheduleCreateDraggable();
         }
-      }, 2000);
+      }, 1000);
     }
 
     /**
@@ -1420,7 +1456,9 @@
      * @private
      */
     #createDraggable(gallery) {
-      if (this.#activeDraggable) return;
+      // Prevent race condition - check both active and creating flags
+      if (this.#activeDraggable || this.#draggableCreating) return;
+      this.#draggableCreating = true;
 
       const { gsap, Draggable } = CardMorph.dependencies;
 
@@ -1460,7 +1498,7 @@
         nextArrow?.classList.toggle('cm-gallery-nav__arrow--hidden', currentX <= bounds.minX);
       };
 
-      // Create draggable
+      // Create draggable with mobile-optimized settings
       this.#activeDraggable = Draggable.create(gallery, {
         type: 'x',
         bounds: updateBounds(),
@@ -1468,6 +1506,10 @@
         zIndexBoost: false,
         cursor: 'grab',
         activeCursor: 'grabbing',
+        // Critical for mobile: prevent Draggable from allowing native touch scroll
+        allowNativeTouchScrolling: false,
+        // Ensure touch events are properly handled
+        dragClickables: true,
         onDragStart: function() {
           lastX = this.x;
           lastTime = Date.now();
@@ -1618,11 +1660,12 @@
         this.#galleryKeyHandler = null;
       }
 
-      // Kill draggable
+      // Kill draggable and reset creation flag
       if (this.#activeDraggable) {
         this.#activeDraggable.kill();
         this.#activeDraggable = null;
       }
+      this.#draggableCreating = false;
 
       // Remove nav container
       if (this.#galleryNavContainer) {

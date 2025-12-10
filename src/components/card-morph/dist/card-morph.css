@@ -490,9 +490,11 @@
   overflow: hidden;
   background: var(--cm-color-background);
 
-  /* Prevent browser back/forward gestures */
+  /* Prevent browser back/forward gestures and ensure proper touch handling */
   overscroll-behavior: none;
-  touch-action: pan-x pan-y pinch-zoom;
+  /* Allow vertical scrolling of view, but horizontal is handled by Draggable */
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Element: Gallery Wrapper (Draggable) */
@@ -507,6 +509,11 @@
   padding-right: 80px;
   will-change: transform;
   cursor: grab;
+  /* Critical for mobile touch: prevent browser from handling gestures */
+  touch-action: pan-y pinch-zoom;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .cm-gallery-section__track:active {
@@ -988,6 +995,8 @@
     padding: 20px;
     padding-right: 40px;
     gap: 12px;
+    /* Ensure touch-action is set for mobile */
+    touch-action: none;
   }
 
   .cm-gallery-section__item {
@@ -996,6 +1005,9 @@
     border-radius: 12px;
     outline: none;
     -webkit-tap-highlight-color: transparent;
+    /* Prevent item from capturing touch events */
+    touch-action: none;
+    pointer-events: auto;
   }
 
   .cm-gallery-section__item:focus {
