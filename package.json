@@ -15,7 +15,7 @@
     "dev": "cd src && python3 -m http.server 8000",
     "preview": "cd dist && python3 -m http.server 8001"
   },
-  "devDependencies": {
+  "dependencies": {
     "sharp": "^0.33.5",
     "lightningcss-cli": "^1.28.2",
     "esbuild": "^0.27.1"
