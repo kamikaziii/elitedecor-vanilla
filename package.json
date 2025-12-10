@@ -1,0 +1,23 @@
+{
+  "name": "elitedecor-vanilla",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Elite Decor - Custom Furniture Portugal",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "copy": "mkdir -p dist && cp -r src/* dist/",
+    "images": "node scripts/images.js",
+    "html": "node scripts/html-images.js",
+    "css": "lightningcss --minify src/css/styles.css -o dist/css/styles.css",
+    "js": "esbuild src/js/app.js --minify --outfile=dist/js/app.js && esbuild src/js/lang-detect.js --minify --outfile=dist/js/lang-detect.js",
+    "build": "npm run clean && npm run copy && npm run images && npm run css && npm run js && npm run html",
+    "build:quick": "npm run copy && npm run images && npm run css && npm run js && npm run html",
+    "dev": "cd src && python3 -m http.server 8000",
+    "preview": "cd dist && python3 -m http.server 8001"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5",
+    "lightningcss-cli": "^1.28.2",
+    "esbuild": "^0.27.1"
+  }
+}

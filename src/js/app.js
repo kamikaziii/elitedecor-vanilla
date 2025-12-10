@@ -316,8 +316,6 @@
 
     // Initialize scroll animations
     initScrollAnimations();
-
-    console.log('Elite Decor initialized with Card Morph (GSAP + Lenis)');
   });
 
 })();

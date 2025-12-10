@@ -6,6 +6,7 @@ node_modules/
 /dist/
 /build/
 .cache/
+scripts/.image-cache.json
 
 # Allow component dist folders
 !src/components/*/dist/
