@@ -47,14 +47,22 @@
       if (this.slides.length === 0) return;
 
       this.currentIndex = 0;
-      this.interval = 4500; // 4.5 seconds
+      this.intervalTime = 4500; // 4.5 seconds
+      this.intervalId = null;
       this.start();
     }
 
     start() {
-      setInterval(() => {
+      this.intervalId = setInterval(() => {
         this.next();
-      }, this.interval);
+      }, this.intervalTime);
+    }
+
+    stop() {
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+      }
     }
 
     next() {

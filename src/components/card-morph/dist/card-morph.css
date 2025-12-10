@@ -17,8 +17,8 @@
   --cm-color-surface: #141414;
   --cm-color-surface-elevated: #1a1a1a;
   --cm-color-text: #ffffff;
-  --cm-color-text-muted: rgba(255, 255, 255, 0.6);
-  --cm-color-text-subtle: rgba(255, 255, 255, 0.4);
+  --cm-color-text-muted: rgba(255, 255, 255, 0.7);
+  --cm-color-text-subtle: rgba(255, 255, 255, 0.6);
   --cm-color-overlay: rgba(0, 0, 0, 0.9);
   --cm-color-border: rgba(255, 255, 255, 0.1);
   --cm-color-accent: #d4af37;

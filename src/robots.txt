@@ -1,0 +1,11 @@
+# Elite Decor - robots.txt
+# https://elitedecor.pt
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://elitedecor.pt/sitemap.xml
+
+# Crawl-delay suggestion (optional, not supported by all bots)
+Crawl-delay: 1
