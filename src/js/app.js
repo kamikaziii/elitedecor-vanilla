@@ -15,7 +15,7 @@
     const scrollThreshold = 50; // Minimum scroll before hiding
 
     window.addEventListener('scroll', () => {
-      const currentScroll = window.pageYOffset;
+      const currentScroll = window.scrollY;
 
       // Always show header at top of page
       if (currentScroll <= scrollThreshold) {

@@ -5,6 +5,7 @@
   <!-- Portuguese Homepage (Default) -->
   <url>
     <loc>https://elitedecor.pt/</loc>
+    <lastmod>2025-12-10</lastmod>
     <xhtml:link rel="alternate" hreflang="pt" href="https://elitedecor.pt/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://elitedecor.pt/en/"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://elitedecor.pt/ru/"/>
@@ -16,6 +17,7 @@
   <!-- English Homepage -->
   <url>
     <loc>https://elitedecor.pt/en/</loc>
+    <lastmod>2025-12-10</lastmod>
     <xhtml:link rel="alternate" hreflang="pt" href="https://elitedecor.pt/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://elitedecor.pt/en/"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://elitedecor.pt/ru/"/>
@@ -27,6 +29,7 @@
   <!-- Russian Homepage -->
   <url>
     <loc>https://elitedecor.pt/ru/</loc>
+    <lastmod>2025-12-10</lastmod>
     <xhtml:link rel="alternate" hreflang="pt" href="https://elitedecor.pt/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://elitedecor.pt/en/"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://elitedecor.pt/ru/"/>
