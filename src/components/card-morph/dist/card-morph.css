@@ -514,6 +514,8 @@
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
+  /* Prevent browser back/forward navigation on horizontal overscroll (macOS trackpad) */
+  overscroll-behavior-x: contain;
 }
 
 .cm-gallery-section__track:active {

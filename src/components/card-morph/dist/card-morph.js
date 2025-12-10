@@ -830,6 +830,9 @@
     /** @type {Array} Lightbox event handlers for cleanup */
     #lightboxHandlers = [];
 
+    /** @type {Array} Lightbox image data for Draggable onClick callback */
+    #lightboxImageData = [];
+
     /** @type {ScrollTrigger[]} */
     #scrollTriggers = [];
 
@@ -1188,6 +1191,18 @@
         console.warn('CardMorph: Error starting Lenis', e);
       }
 
+      // Refresh ScrollTrigger after restoring body position and scroll
+      // This is critical: when body was position:fixed, ScrollTrigger cached stale positions
+      // Without refresh, triggers will fire at wrong scroll positions causing layout corruption
+      // Use safe refresh (true) to wait until scrolling stops before recalculating
+      const { ScrollTrigger } = CardMorph.dependencies;
+      if (ScrollTrigger) {
+        // Use requestAnimationFrame to ensure DOM has settled after scroll restoration
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh(true);
+        });
+      }
+
       // Return focus
       this.activeCard?.focus();
 
@@ -1370,6 +1385,8 @@
 
     /**
      * Initialize lightbox for gallery images
+     * Uses GSAP Draggable's built-in click detection (3px threshold)
+     * instead of custom mouse tracking for reliable click vs drag distinction
      * @param {Element} gallery
      * @param {NodeList} images
      * @private
@@ -1382,58 +1399,25 @@
         caption: img.alt || ''
       }));
 
-      // Track if we're dragging to prevent click
-      let isDragging = false;
-      let startX = 0;
-      let startY = 0;
-
       // Store handlers for cleanup
       this.#lightboxHandlers = [];
+
+      // Store image data for Draggable onClick callback
+      this.#lightboxImageData = imageData;
 
       // Add click handlers to gallery items
       const galleryItems = gallery.querySelectorAll('.cm-gallery-section__item');
 
       galleryItems.forEach((item, index) => {
-        const handler = (e) => {
-          // Only open if not dragging
-          if (!isDragging) {
-            e.preventDefault();
-            Lightbox.open(imageData, index, item);
-          }
-        };
-
-        const mouseDownHandler = (e) => {
-          startX = e.clientX;
-          startY = e.clientY;
-          isDragging = false;
-        };
-
-        const mouseMoveHandler = (e) => {
-          const dx = Math.abs(e.clientX - startX);
-          const dy = Math.abs(e.clientY - startY);
-          if (dx > 5 || dy > 5) {
-            isDragging = true;
-          }
-        };
-
-        const mouseUpHandler = () => {
-          // Reset after a short delay to allow click to process
-          setTimeout(() => {
-            isDragging = false;
-          }, 100);
-        };
-
-        item.addEventListener('click', handler);
-        item.addEventListener('mousedown', mouseDownHandler);
-        item.addEventListener('mousemove', mouseMoveHandler);
-        item.addEventListener('mouseup', mouseUpHandler);
+        // Store index on item for Draggable onClick access
+        item.dataset.lightboxIndex = index;
 
         // Make items focusable for keyboard access
         item.setAttribute('tabindex', '0');
         item.setAttribute('role', 'button');
         item.setAttribute('aria-label', `View image ${index + 1}: ${imageData[index].alt || 'Gallery image'}`);
 
-        // Keyboard handler
+        // Keyboard handler (Draggable doesn't intercept keyboard events)
         const keyHandler = (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -1445,7 +1429,7 @@
         // Store handlers for cleanup
         this.#lightboxHandlers.push({
           item,
-          handlers: { handler, mouseDownHandler, mouseMoveHandler, mouseUpHandler, keyHandler }
+          handlers: { keyHandler }
         });
       });
     }
@@ -1498,7 +1482,11 @@
         nextArrow?.classList.toggle('cm-gallery-nav__arrow--hidden', currentX <= bounds.minX);
       };
 
+      // Store reference for onClick callback
+      const instance = this;
+
       // Create draggable with mobile-optimized settings
+      // Uses GSAP's built-in click detection for reliable click vs drag distinction
       this.#activeDraggable = Draggable.create(gallery, {
         type: 'x',
         bounds: updateBounds(),
@@ -1508,8 +1496,23 @@
         activeCursor: 'grabbing',
         // Critical for mobile: prevent Draggable from allowing native touch scroll
         allowNativeTouchScrolling: false,
-        // Ensure touch events are properly handled
+        // Allow dragging on clickable elements - we use onClick for click detection
         dragClickables: true,
+        // Increase click threshold from default 3px to 6px for better mobile tap detection
+        // Fingers are less precise than mouse, so slightly higher threshold reduces accidental drags
+        minimumMovement: 6,
+        // onClick fires when pointer moves < minimumMovement pixels
+        // This is more reliable than custom mouse tracking, especially on trackpads/touch
+        onClick: function(e) {
+          // Find the gallery item that was clicked
+          const item = e.target.closest('.cm-gallery-section__item');
+          if (item && instance.#lightboxImageData.length > 0) {
+            const index = parseInt(item.dataset.lightboxIndex, 10);
+            if (!isNaN(index)) {
+              Lightbox.open(instance.#lightboxImageData, index, item);
+            }
+          }
+        },
         onDragStart: function() {
           lastX = this.x;
           lastTime = Date.now();
@@ -1561,15 +1564,25 @@
         document.addEventListener('keydown', this.#galleryKeyHandler);
       }
 
-      // Wheel/touchpad scroll
+      // Wheel/touchpad scroll - handle horizontal scroll while allowing vertical
+      // Best practice: Only intercept clearly horizontal gestures, let vertical pass through
+      // Reference: MDN wheel event - use deltaX/deltaY for intent detection
       this.#galleryWheelHandler = (e) => {
-        const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+        const absX = Math.abs(e.deltaX);
+        const absY = Math.abs(e.deltaY);
 
-        if (!isHorizontalScroll || Math.abs(e.deltaX) < 2) return;
+        // Require horizontal to be dominant by a factor of 1.5x to avoid diagonal ambiguity
+        // This ensures diagonal scrolls (common on trackpads) favor vertical page scroll
+        const isHorizontalDominant = absX > absY * 1.5;
 
+        // Allow vertical scrolling to pass through - only intercept clearly horizontal
+        // Also require minimum deltaX to filter out noise
+        if (!isHorizontalDominant || absX < 2) return;
+
+        // Only preventDefault for horizontal scroll to block browser back/forward gesture
+        // Using passive: false is required when calling preventDefault()
         e.preventDefault();
         e.stopPropagation();
-        e.stopImmediatePropagation();
 
         const bounds = updateBounds();
         const currentX = gsap.getProperty(gallery, 'x');
@@ -1580,6 +1593,7 @@
           updateArrowStates();
         }
       };
+      // passive: false is required to call preventDefault() - see MDN wheel event docs
       gallerySection.addEventListener('wheel', this.#galleryWheelHandler, { passive: false, capture: true });
 
       // Resize handler
@@ -1686,20 +1700,22 @@
         this.#resizeHandler = null;
       }
 
-      // Remove lightbox handlers
+      // Remove lightbox handlers (only keyboard handlers remain after Draggable onClick migration)
       if (this.#lightboxHandlers.length > 0) {
         this.#lightboxHandlers.forEach(({ item, handlers }) => {
-          item.removeEventListener('click', handlers.handler);
-          item.removeEventListener('mousedown', handlers.mouseDownHandler);
-          item.removeEventListener('mousemove', handlers.mouseMoveHandler);
-          item.removeEventListener('mouseup', handlers.mouseUpHandler);
-          item.removeEventListener('keydown', handlers.keyHandler);
+          if (handlers.keyHandler) {
+            item.removeEventListener('keydown', handlers.keyHandler);
+          }
           item.removeAttribute('tabindex');
           item.removeAttribute('role');
           item.removeAttribute('aria-label');
+          item.removeAttribute('data-lightbox-index');
         });
         this.#lightboxHandlers = [];
       }
+
+      // Clear lightbox image data
+      this.#lightboxImageData = [];
     }
 
     // ========================================================================
