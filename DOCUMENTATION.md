@@ -109,8 +109,8 @@ No build process, no npm dependencies.
 
 ```
 src/
-├── index.html              # English homepage
-├── pt/index.html           # Portuguese
+├── index.html              # Portuguese homepage (default)
+├── en/index.html           # English
 ├── ru/index.html           # Russian
 ├── assets/
 │   ├── collections/        # Noble (13 images), Essense (5 images)
@@ -124,7 +124,7 @@ src/
 
 ### Multi-Language Support
 
-- **3 languages**: English (default), Portuguese, Russian
+- **3 languages**: Portuguese (default), English, Russian
 - **Structure**: Separate HTML files in subdirectories
 - **Shared assets**: All languages use same images/CSS/JS
 - **SEO**: hreflang tags for proper indexing
@@ -216,8 +216,8 @@ src/
 - Essense: 5 gallery images + hero
 
 **Languages**:
-- English (default)
-- Portuguese
+- Portuguese (default)
+- English
 - Russian
 
 ## Next Steps

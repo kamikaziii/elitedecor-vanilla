@@ -401,14 +401,8 @@ button {
 }
 
 /* --------------------------------------------------------------------------
-   Flip Cards Section - Stacking effect with GSAP ScrollTrigger
-   Responsive padding: ~68px desktop, ~36px tablet, ~31px mobile
+   Cards Hint - Vertical text hint for card galleries
    -------------------------------------------------------------------------- */
-.flip-cards-section {
-  position: relative;
-  padding: 0 clamp(31px, 4.5vw, 68px); /* Responsive padding like original */
-  margin-bottom: 100px; /* Gap before next section */
-}
 
 /* Vertical hint text - centered in gap on desktop, edge-hugging on mobile */
 .cards-hint {
@@ -439,197 +433,6 @@ button {
 
 .cards-hint.visible {
   opacity: 1;
-}
-
-.flip-cards-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 65px; /* Space between cards */
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* Flip Card - exact border-radius: 27px */
-/* Height adapts to viewport - never overflow */
-.flip-card {
-  position: relative;
-  width: 100%;
-  height: 85vh; /* Safe height that won't overflow */
-  min-height: 400px;
-  max-height: 800px;
-  perspective: 2000px;
-  cursor: pointer;
-  outline: none;
-}
-
-/* For stacking effect - later cards stack ON TOP of earlier ones */
-.flip-card {
-  z-index: 1;
-}
-
-.flip-card:nth-child(1) { z-index: 1; }
-.flip-card:nth-child(2) { z-index: 2; }
-.flip-card:nth-child(3) { z-index: 3; }
-
-.flip-card:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 4px;
-}
-
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  -webkit-transform-style: preserve-3d;
-  transition: transform var(--flip-duration) var(--ease-out-expo);
-}
-
-.flip-card.flipped .flip-card-inner {
-  transform: rotateY(180deg);
-}
-
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  inset: 0;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border-radius: 27px; /* Exact from original */
-  overflow: hidden;
-  background-color: var(--bg-dark); /* 100% opaque - no transparency */
-}
-
-/* Front Face */
-.flip-card-front {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  transform-style: preserve-3d; /* Required for children backface-visibility */
-}
-
-.flip-card-front img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-/* Card Title - exact: 75px, 700, -3.75px letter-spacing */
-.flip-card-front h3 {
-  position: relative;
-  z-index: 1;
-  padding: 24px;
-  font-family: var(--font-display);
-  font-size: 75px;
-  font-weight: 700;
-  letter-spacing: -3.75px;
-  line-height: 1.1;
-  color: var(--text-white);
-  text-transform: none;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-/* Back Face */
-.flip-card-back {
-  transform: rotateY(180deg);
-  background: var(--bg-dark);
-  transform-style: preserve-3d;
-}
-
-/* Back content - always visible, no transitions */
-.back-content {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  padding: 48px;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center content horizontally */
-  justify-content: center; /* Center content vertically */
-  overflow-y: auto;
-  opacity: 1;
-}
-
-/* Text wrapper for optimal readability */
-.back-content h1,
-.back-content p {
-  max-width: 65ch; /* Optimal 50-75 char line length */
-  width: 100%;
-  text-align: center;
-}
-
-.back-content h1 {
-  font-family: var(--font-display);
-  font-size: 48px;
-  font-weight: 700;
-  letter-spacing: -2px;
-  margin-bottom: 24px;
-}
-
-.back-content p {
-  font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 1.6; /* 1.5-1.6x for readability */
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
-/* Gallery Carousel */
-.gallery-carousel {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  padding: 24px 0;
-  margin-top: auto;
-  width: 100%; /* Full width of card */
-  max-width: none; /* Override text max-width */
-}
-
-.gallery-carousel::-webkit-scrollbar {
-  height: 4px;
-}
-
-.gallery-carousel::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
-}
-
-.gallery-carousel::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-}
-
-.carousel-item {
-  flex: 0 0 200px;
-  height: 200px;
-  scroll-snap-align: start;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 2px solid transparent;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.carousel-item:hover,
-.carousel-item:focus-visible {
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: scale(1.02);
-}
-
-.carousel-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 /* --------------------------------------------------------------------------
@@ -890,18 +693,6 @@ button {
     line-height: 48px;
   }
 
-  .flip-card {
-    height: calc(100vh - 36px);
-    min-height: 550px;
-    max-height: 800px;
-  }
-
-  .flip-card-front h3 {
-    font-size: 48px;
-    letter-spacing: -2px;
-    line-height: 48px;
-  }
-
   .step {
     grid-template-columns: 60px 1fr;
     gap: 16px;
@@ -941,31 +732,6 @@ button {
     font-size: 24px;
     line-height: 36px;
     letter-spacing: -0.5px;
-  }
-
-  .flip-card {
-    height: calc(100vh - 36px);
-    min-height: 450px;
-    max-height: 700px;
-  }
-
-  .flip-card-front h3 {
-    font-size: 36px;
-    letter-spacing: -1.5px;
-    line-height: 36px;
-    padding: 40px 24px;
-  }
-
-  .back-content {
-    padding: 24px;
-  }
-
-  .back-content h1 {
-    font-size: 32px;
-  }
-
-  .back-content p {
-    font-size: 16px;
   }
 
   .how-it-works {
@@ -1036,12 +802,6 @@ button {
   .menu-toggle,
   .cards-hint {
     display: none;
-  }
-
-  .flip-card {
-    break-inside: avoid;
-    height: auto;
-    min-height: auto;
   }
 
   body {

@@ -65,8 +65,8 @@ elitedecor-vanilla/
 ## Multi-Language Support
 
 The site supports 3 languages:
-- **English** (default): `/` → `src/index.html`
-- **Portuguese**: `/pt/` → `src/pt/index.html`
+- **Portuguese** (default): `/` → `src/index.html`
+- **English**: `/en/` → `src/en/index.html`
 - **Russian**: `/ru/` → `src/ru/index.html`
 
 All languages share the same assets, CSS, and JavaScript. Language switcher in header, hreflang tags for SEO.

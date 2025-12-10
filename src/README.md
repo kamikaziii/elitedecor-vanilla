@@ -39,12 +39,12 @@ src/
 
 ## Multi-Language Support
 
-The site supports English (default), Portuguese, and Russian through separate HTML files.
+The site supports Portuguese (default), English, and Russian through separate HTML files.
 
 ### Language Structure
 
-- **English**: `/` → `src/index.html`
-- **Portuguese**: `/pt/` → `src/pt/index.html`
+- **Portuguese** (default): `/` → `src/index.html`
+- **English**: `/en/` → `src/en/index.html`
 - **Russian**: `/ru/` → `src/ru/index.html`
 
 All languages share the same assets, CSS, and JavaScript files.
