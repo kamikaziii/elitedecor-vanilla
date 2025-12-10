@@ -179,8 +179,11 @@
     /** @type {Function|null} Keyboard handler */
     static #keyHandler = null;
 
-    /** @type {Function|null} Touch start handler */
+    /** @type {number} Touch start X position */
     static #touchStartX = 0;
+
+    /** @type {number} Touch start Y position for swipe-to-close */
+    static #touchStartY = 0;
 
     /**
      * Initialize the lightbox (creates DOM once)
@@ -226,23 +229,26 @@
             </main>
 
             <nav class="cm-lightbox__nav" aria-label="Gallery navigation">
-              <button class="cm-lightbox__prev" aria-label="Previous image" type="button">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-              </button>
+              <div class="cm-lightbox__nav-caption" aria-hidden="true"></div>
+              <div class="cm-lightbox__nav-controls">
+                <button class="cm-lightbox__prev" aria-label="Previous image" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
 
-              <div class="cm-lightbox__counter" aria-live="polite" aria-atomic="true">
-                <span class="cm-lightbox__current">1</span>
-                <span aria-hidden="true"> / </span>
-                <span class="cm-lightbox__total">1</span>
+                <div class="cm-lightbox__counter" aria-live="polite" aria-atomic="true">
+                  <span class="cm-lightbox__current">1</span>
+                  <span aria-hidden="true"> / </span>
+                  <span class="cm-lightbox__total">1</span>
+                </div>
+
+                <button class="cm-lightbox__next" aria-label="Next image" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
               </div>
-
-              <button class="cm-lightbox__next" aria-label="Next image" type="button">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-              </button>
             </nav>
           </div>
         </dialog>
@@ -260,6 +266,7 @@
         image: Lightbox.#dialog.querySelector('.cm-lightbox__image'),
         imageWrapper: Lightbox.#dialog.querySelector('.cm-lightbox__image-wrapper'),
         caption: Lightbox.#dialog.querySelector('.cm-lightbox__caption'),
+        navCaption: Lightbox.#dialog.querySelector('.cm-lightbox__nav-caption'),
         loader: Lightbox.#dialog.querySelector('.cm-lightbox__loader'),
         closeBtn: Lightbox.#dialog.querySelector('.cm-lightbox__close'),
         prevBtn: Lightbox.#dialog.querySelector('.cm-lightbox__prev'),
@@ -302,22 +309,33 @@
       prevBtn.addEventListener('click', () => Lightbox.prev());
       nextBtn.addEventListener('click', () => Lightbox.next());
 
-      // Touch swipe support
+      // Touch swipe support - horizontal for prev/next, vertical down for close
       imageWrapper.addEventListener('touchstart', (e) => {
         Lightbox.#touchStartX = e.changedTouches[0].pageX;
+        Lightbox.#touchStartY = e.changedTouches[0].pageY;
       }, { passive: true });
 
       imageWrapper.addEventListener('touchend', (e) => {
         const touchEndX = e.changedTouches[0].pageX;
-        const diff = Lightbox.#touchStartX - touchEndX;
+        const touchEndY = e.changedTouches[0].pageY;
+        const diffX = Lightbox.#touchStartX - touchEndX;
+        const diffY = Lightbox.#touchStartY - touchEndY;
         const threshold = 50;
 
-        if (Math.abs(diff) > threshold) {
-          if (diff > 0) {
+        // Determine if swipe is more horizontal or vertical
+        const isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
+
+        if (isHorizontalSwipe && Math.abs(diffX) > threshold) {
+          // Horizontal swipe - navigate prev/next
+          if (diffX > 0) {
             Lightbox.next();
           } else {
             Lightbox.prev();
           }
+        } else if (!isHorizontalSwipe && diffY < -threshold) {
+          // Swipe DOWN (negative diffY means finger moved down) - close lightbox
+          // This is the modern mobile UX pattern for dismissing modals
+          Lightbox.close();
         }
       }, { passive: true });
     }
@@ -464,7 +482,7 @@
      */
     static #loadImage(index) {
       const imageData = Lightbox.#images[index];
-      const { image, caption, current, prevBtn, nextBtn, loader } = Lightbox.#dom;
+      const { image, caption, navCaption, current, prevBtn, nextBtn, loader } = Lightbox.#dom;
 
       // Show loader
       loader.style.display = 'block';
@@ -483,8 +501,10 @@
       };
       newImg.src = imageData.src;
 
-      // Update caption
-      caption.textContent = imageData.caption || imageData.alt || '';
+      // Update caption (both the hidden one for accessibility and visible one in nav)
+      const captionText = imageData.caption || imageData.alt || '';
+      caption.textContent = captionText;
+      navCaption.textContent = captionText;
 
       // Update counter
       current.textContent = index + 1;
@@ -993,11 +1013,11 @@
     }
 
     /**
-     * Initialize card stacking effect
+     * Initialize card stacking effect with smooth easing
      * @private
      */
     #initCardStacking() {
-      const { ScrollTrigger } = CardMorph.dependencies;
+      const { gsap, ScrollTrigger } = CardMorph.dependencies;
 
       if (this.cards.length === 0) return;
 
@@ -1007,6 +1027,34 @@
         const isLast = index === this.cards.length - 1;
 
         if (!isLast) {
+          // Create a subtle scale animation as card approaches pin position
+          // This creates a smoother "settling" effect instead of hard snap
+          gsap.fromTo(card,
+            { scale: 1 },
+            {
+              scale: 0.98,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 60%',
+                end: 'center center',
+                scrub: 0.5, // Smooth scrubbing for natural feel
+              }
+            }
+          );
+
+          // Restore scale after pinning starts
+          gsap.to(card, {
+            scale: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'center center',
+              end: 'center 40%',
+              scrub: 0.3,
+            }
+          });
+
           const st = ScrollTrigger.create({
             trigger: card,
             start: 'center center',
@@ -1080,11 +1128,13 @@
         console.warn('CardMorph: Error stopping Lenis', e);
       }
 
-      // Lock body scroll
+      // Lock body scroll (mobile Safari requires touch-action too)
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.top = `-${this.scrollPosition}px`;
       document.body.style.width = '100%';
+      document.body.style.touchAction = 'none';
+      document.documentElement.style.overflow = 'hidden';
       document.body.classList.add('cm-no-scroll');
 
       // Reset view scroll
@@ -1174,19 +1224,24 @@
       // Cleanup gallery
       this.#cleanupGallery();
 
-      // Restore body scroll
+      // Restore body scroll (must match all styles set when opening)
       document.body.style.overflow = '';
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
+      document.body.style.touchAction = '';
+      document.documentElement.style.overflow = '';
       document.body.classList.remove('cm-no-scroll');
 
       // Restore scroll position
       window.scrollTo(0, this.scrollPosition);
 
-      // Resume Lenis with error handling
+      // Resume Lenis with error handling and delay for mobile Safari
       try {
-        this.#lenis?.start();
+        // Small delay to ensure DOM is ready on mobile
+        setTimeout(() => {
+          this.#lenis?.start();
+        }, 50);
       } catch (e) {
         console.warn('CardMorph: Error starting Lenis', e);
       }
@@ -1545,6 +1600,9 @@
         }
       })[0];
 
+      // Reset creation flag now that Draggable is created
+      this.#draggableCreating = false;
+
       // Create navigation
       this.#createGalleryNav(gallerySection, gallery, updateBounds, updateArrowStates, scrollStep);
 
@@ -1774,6 +1832,8 @@
         document.body.style.position = '';
         document.body.style.top = '';
         document.body.style.width = '';
+        document.body.style.touchAction = '';
+        document.documentElement.style.overflow = '';
         document.body.classList.remove('cm-no-scroll');
         window.scrollTo(0, this.scrollPosition);
       }

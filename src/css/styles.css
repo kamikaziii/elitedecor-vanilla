@@ -98,11 +98,13 @@ button {
 }
 
 /* Skip link for accessibility (WCAG 2.4.1) */
+/* Hidden off-screen by default, visible only on focus */
+/* Best practice: Use off-screen positioning, NOT opacity:0 or display:none */
+/* Reference: https://webaim.org/techniques/skipnav/ */
 .skip-link {
   position: absolute;
-  top: -50px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: -9999px;
+  top: auto;
   z-index: 10000;
   padding: 12px 24px;
   background: var(--bg-dark);
@@ -112,11 +114,15 @@ button {
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  transition: top 0.3s ease;
+  width: auto;
+  height: auto;
 }
 
 .skip-link:focus {
+  position: fixed;
+  left: 50%;
   top: 16px;
+  transform: translateX(-50%);
   outline: 2px solid var(--text-white);
   outline-offset: 2px;
 }

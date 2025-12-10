@@ -755,7 +755,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px var(--cm-spacing-xl);
+  /* Top: header space, Bottom: nav space + safety margin */
+  padding: 80px var(--cm-spacing-xl) 100px;
+  overflow: auto;
 }
 
 /* Element: Figure */
@@ -808,13 +810,18 @@
   to { transform: rotate(360deg); }
 }
 
-/* Element: Caption */
+/* Element: Caption - hidden here, shown via JS in nav */
 .cm-lightbox__caption {
-  margin-top: var(--cm-spacing-lg);
-  color: var(--cm-color-text-muted);
-  text-align: center;
-  font-size: var(--cm-font-size-sm);
-  max-width: 600px;
+  /* Caption is visually hidden here - the text is duplicated in nav */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Element: Navigation */
@@ -824,11 +831,32 @@
   left: 0;
   right: 0;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--cm-spacing-sm);
+  padding: var(--cm-spacing-lg) var(--cm-spacing-xl);
+  z-index: 10;
+  /* Gradient background to ensure content is readable */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 70%, transparent 100%);
+  padding-top: 48px;
+}
+
+/* Caption text inside nav */
+.cm-lightbox__nav-caption {
+  color: var(--cm-color-text-muted);
+  font-size: var(--cm-font-size-sm);
+  text-align: center;
+  max-width: 500px;
+  line-height: 1.3;
+}
+
+/* Navigation controls row */
+.cm-lightbox__nav-controls {
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--cm-spacing-lg);
-  padding: var(--cm-spacing-xl);
-  z-index: 10;
 }
 
 /* Element: Navigation Arrows */
@@ -908,14 +936,23 @@
     transform: translateY(-50%) scale(1.1);
   }
 
-  /* Keep nav at bottom for the counter only */
+  /* Keep nav at bottom for caption and counter */
   .cm-lightbox__nav {
     position: absolute;
-    bottom: var(--cm-spacing-xl);
+    bottom: var(--cm-spacing-lg);
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    gap: var(--cm-spacing-lg);
+    width: auto;
+    max-width: 80%;
+    background: none;
+    padding: 0;
+    padding-top: 0;
+  }
+
+  /* Hide arrows from nav-controls on desktop (they're positioned fixed) */
+  .cm-lightbox__nav-controls .cm-lightbox__prev,
+  .cm-lightbox__nav-controls .cm-lightbox__next {
+    /* Already positioned fixed, but reset transforms for the fixed positioning */
   }
 }
 
@@ -997,8 +1034,9 @@
     padding: 20px;
     padding-right: 40px;
     gap: 12px;
-    /* Ensure touch-action is set for mobile */
-    touch-action: none;
+    /* Allow vertical scrolling (pan-y) while GSAP Draggable handles horizontal */
+    /* This lets users scroll vertically out of the gallery section */
+    touch-action: pan-y;
   }
 
   .cm-gallery-section__item {
@@ -1007,8 +1045,8 @@
     border-radius: 12px;
     outline: none;
     -webkit-tap-highlight-color: transparent;
-    /* Prevent item from capturing touch events */
-    touch-action: none;
+    /* Allow vertical scroll passthrough, let Draggable handle horizontal */
+    touch-action: pan-y;
     pointer-events: auto;
   }
 
@@ -1072,6 +1110,28 @@
   .cm-lightbox__close svg {
     width: 20px;
     height: 20px;
+  }
+}
+
+/* ==========================================================================
+   SHORT SCREENS (laptops with limited height like MacBook Air)
+   ========================================================================== */
+
+@media (max-height: 800px) and (min-width: 768px) {
+  .cm-lightbox__main {
+    padding: 60px var(--cm-spacing-xl) 100px;
+  }
+
+  .cm-lightbox__image-wrapper {
+    max-height: calc(100vh - 180px);
+  }
+
+  .cm-lightbox__image {
+    max-height: calc(100vh - 180px);
+  }
+
+  .cm-lightbox__nav-caption {
+    font-size: var(--cm-font-size-xs);
   }
 }
 
