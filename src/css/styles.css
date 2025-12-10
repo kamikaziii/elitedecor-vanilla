@@ -566,9 +566,40 @@ button {
   opacity: 0.7;
 }
 
+/* Footer bottom row - CTA left, language switcher right */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-bottom .lang-switcher {
+  display: flex;
+  gap: 12px;
+}
+
+.footer-bottom .lang-switcher a {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-white);
+  opacity: 0.5;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.footer-bottom .lang-switcher a:hover,
+.footer-bottom .lang-switcher a.active {
+  opacity: 1;
+}
+
 /* Let's talk CTA - exact: ~75px, 700, -3.73px letter-spacing */
 .footer-cta {
-  text-align: center;
+  text-align: left;
 }
 
 .footer-cta a {
@@ -716,6 +747,16 @@ button {
   .footer-cta a {
     font-size: 48px;
     letter-spacing: -2px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .footer-bottom .lang-switcher {
+    align-self: flex-end;
   }
 }
 
