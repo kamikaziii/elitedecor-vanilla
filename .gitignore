@@ -2,10 +2,13 @@
 node_modules/
 .pnpm-store/
 
-# Build outputs
-dist/
-build/
+# Build outputs (root level only)
+/dist/
+/build/
 .cache/
+
+# Allow component dist folders
+!src/components/*/dist/
 
 # IDE & Editor
 .idea/
