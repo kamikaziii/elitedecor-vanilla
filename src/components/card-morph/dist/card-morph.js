@@ -1181,9 +1181,10 @@
     /**
      * Finalize view close
      * @param {Element} view
+     * @param {boolean} scrollAlreadyRestored - Skip scroll restoration if already done
      * @private
      */
-    #finalizeClose(view) {
+    #finalizeClose(view, scrollAlreadyRestored = false) {
       const { gsap } = CardMorph.dependencies;
 
       view.classList.remove('cm-view--active');
@@ -1198,17 +1199,19 @@
       // Cleanup gallery
       this.#cleanupGallery();
 
-      // Restore body scroll (must match all styles set when opening)
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.touchAction = '';
-      document.documentElement.style.overflow = '';
-      document.body.classList.remove('cm-no-scroll');
+      // Restore body scroll (skip if already restored for back gesture)
+      if (!scrollAlreadyRestored) {
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.touchAction = '';
+        document.documentElement.style.overflow = '';
+        document.body.classList.remove('cm-no-scroll');
 
-      // Restore scroll position
-      window.scrollTo(0, this.scrollPosition);
+        // Restore scroll position
+        window.scrollTo(0, this.scrollPosition);
+      }
 
       // Resume Lenis with error handling and delay for mobile Safari
       try {
@@ -1223,12 +1226,12 @@
       // Refresh ScrollTrigger after restoring body position and scroll
       // This is critical: when body was position:fixed, ScrollTrigger cached stale positions
       // Without refresh, triggers will fire at wrong scroll positions causing layout corruption
-      // Use safe refresh (true) to wait until scrolling stops before recalculating
+      // Use immediate refresh (no "true" param) to avoid blocking scroll on mobile
       const { ScrollTrigger } = CardMorph.dependencies;
       if (ScrollTrigger) {
         // Use requestAnimationFrame to ensure DOM has settled after scroll restoration
         requestAnimationFrame(() => {
-          ScrollTrigger.refresh(true);
+          ScrollTrigger.refresh();
         });
       }
 
@@ -1296,16 +1299,36 @@
         }
       } else if (!hash && this.activeView) {
         // No hash but view open - close the view without pushing history
-        this.#closeInternal(true);
+        // CRITICAL: Immediately restore scroll on back gesture (before animation)
+        // Mobile Safari needs scrollable content instantly during back transition
+        this.#immediateScrollRestore();
+        this.#closeInternal(true, true); // skipHistory=true, scrollAlreadyRestored=true
       }
+    }
+
+    /**
+     * Immediately restore body scroll (used for back gesture)
+     * This ensures mobile Safari has scrollable content during back transition
+     * @private
+     */
+    #immediateScrollRestore() {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.touchAction = '';
+      document.documentElement.style.overflow = '';
+      document.body.classList.remove('cm-no-scroll');
+      window.scrollTo(0, this.scrollPosition);
     }
 
     /**
      * Internal close method with history control
      * @param {boolean} skipHistory - Skip clearing hash from history
+     * @param {boolean} scrollAlreadyRestored - Skip scroll restoration (already done for back gesture)
      * @private
      */
-    #closeInternal(skipHistory = false) {
+    #closeInternal(skipHistory = false, scrollAlreadyRestored = false) {
       if (!this.activeView) return;
 
       const { gsap } = CardMorph.dependencies;
@@ -1320,13 +1343,13 @@
       const safetyTimeout = setTimeout(() => {
         if (this.activeView) {
           console.warn('CardMorph: Close animation timed out, forcing cleanup');
-          this.#finalizeClose(view);
+          this.#finalizeClose(view, scrollAlreadyRestored);
         }
       }, 1000);
 
       const cleanupAndFinalize = () => {
         clearTimeout(safetyTimeout);
-        this.#finalizeClose(view);
+        this.#finalizeClose(view, scrollAlreadyRestored);
       };
 
       if (!this.#isReducedMotion()) {
