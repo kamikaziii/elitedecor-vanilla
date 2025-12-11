@@ -135,58 +135,69 @@ button {
 }
 
 /* --------------------------------------------------------------------------
-   Header - Smart hide/reveal on scroll (2025 best practice)
-   Hides on scroll down, reveals on scroll up
-   Subtle whitish glassmorphism effect
+   Logo Badge - Compact glassmorphic logo container (2025 best practice)
+   Floating badge design instead of full-width header
+   ~93% browser support for backdrop-filter (caniuse.com)
    -------------------------------------------------------------------------- */
 .site-header {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  /* Subtle whitish glassmorphism */
-  background: rgba(255, 255, 255, 0.08);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  transform: translateY(0);
-  transition: transform 0.3s ease;
+  top: 16px;
+  left: 16px;
+  z-index: 9999;
 }
 
-/* Hide header when scrolling down */
-.header-hidden .site-header {
-  transform: translateY(-100%);
+.logo {
+  /* Fallback for non-supporting browsers */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(200, 200, 200, 0.3);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Glassmorphism enhancement for supporting browsers */
+@supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+  .logo {
+    background: rgba(255, 255, 255, 0.15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Subtle hover effect */
+.logo:hover {
+  transform: scale(1.02);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.logo:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+/* Accessibility: Respect reduced transparency preference */
+@media (prefers-reduced-transparency: reduce) {
+  .logo {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
 }
 
 .logo img {
   width: 28px;
   height: auto;
-}
-
-/* Language Switcher */
-.lang-switcher {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.lang-switcher a {
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.7);
-  transition: color 0.3s ease;
-}
-
-.lang-switcher a:hover,
-.lang-switcher a.active {
-  color: var(--text-white);
+  display: block;
 }
 
 /* Cards Section */

@@ -7,37 +7,6 @@
   'use strict';
 
   // ==========================================================================
-  // Smart Header - Hide on scroll down, show on scroll up
-  // ==========================================================================
-
-  function initSmartHeader() {
-    let lastScroll = 0;
-    const scrollThreshold = 50; // Minimum scroll before hiding
-
-    window.addEventListener('scroll', () => {
-      const currentScroll = window.scrollY;
-
-      // Always show header at top of page
-      if (currentScroll <= scrollThreshold) {
-        document.body.classList.remove('header-hidden');
-        lastScroll = currentScroll;
-        return;
-      }
-
-      // Scrolling down - hide header
-      if (currentScroll > lastScroll) {
-        document.body.classList.add('header-hidden');
-      }
-      // Scrolling up - show header
-      else if (currentScroll < lastScroll) {
-        document.body.classList.remove('header-hidden');
-      }
-
-      lastScroll = currentScroll;
-    }, { passive: true });
-  }
-
-  // ==========================================================================
   // Hero Slideshow - 4.5s interval crossfade
   // ==========================================================================
 
@@ -302,9 +271,6 @@
   // ==========================================================================
 
   document.addEventListener('DOMContentLoaded', () => {
-    // Initialize smart header (hide on scroll down, show on scroll up)
-    initSmartHeader();
-
     // Initialize hero slideshow (4.5s interval)
     new HeroSlideshow();
 
