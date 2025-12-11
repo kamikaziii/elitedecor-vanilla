@@ -526,12 +526,12 @@ button {
   color: var(--text-white);
 }
 
-/* Step Title - exact: 24px, 700, -1.2px letter-spacing */
+/* Step Title - exact: 24px, 700, -0.5px letter-spacing */
 .step-title {
   font-family: var(--font-display);
   font-size: 24px;
   font-weight: 700;
-  letter-spacing: -1.2px;
+  letter-spacing: -0.5px;
   color: var(--text-white);
 }
 
