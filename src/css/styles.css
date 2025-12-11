@@ -222,7 +222,8 @@ button {
    -------------------------------------------------------------------------- */
 .hero {
   position: relative;
-  height: 100vh;
+  height: 100vh; /* Fallback for older browsers */
+  height: 100svh; /* Modern browsers - accounts for mobile toolbar */
   min-height: 600px;
   display: flex;
   align-items: flex-end;
@@ -330,7 +331,7 @@ button {
 /* Scroll Down Indicator */
 .scroll-indicator {
   position: absolute;
-  bottom: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
