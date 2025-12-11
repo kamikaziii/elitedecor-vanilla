@@ -1013,7 +1013,14 @@
     }
 
     /**
-     * Initialize card stacking effect with smooth easing
+     * Initialize card stacking effect using CSS sticky (no GSAP pin)
+     *
+     * Why CSS sticky instead of GSAP pin:
+     * - GSAP pin is a binary state change (fixed or not) that causes visible "snap"
+     * - CSS sticky is ALWAYS on - no state transition, no snap
+     * - We only use GSAP for smooth scroll-linked transforms (scale, brightness)
+     * - This is the approach used by Apple, Stripe, and premium Awwwards sites
+     *
      * @private
      */
     #initCardStacking() {
@@ -1021,52 +1028,19 @@
 
       if (this.cards.length === 0) return;
 
-      const lastCard = this.cards[this.cards.length - 1];
+      const numCards = this.cards.length;
 
+      // Apply sticky positioning to each card
+      // Cards stick at vertical center: top = (100vh - card height) / 2
+      // Card height is 85vh (from CSS), so top = 7.5vh for centering
       this.cards.forEach((card, index) => {
-        const isLast = index === this.cards.length - 1;
-
-        if (!isLast) {
-          // Create a subtle scale animation as card approaches pin position
-          // This creates a smoother "settling" effect instead of hard snap
-          gsap.fromTo(card,
-            { scale: 1 },
-            {
-              scale: 0.98,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 60%',
-                end: 'center center',
-                scrub: 0.5, // Smooth scrubbing for natural feel
-              }
-            }
-          );
-
-          // Restore scale after pinning starts
-          gsap.to(card, {
-            scale: 1,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'center center',
-              end: 'center 40%',
-              scrub: 0.3,
-            }
-          });
-
-          const st = ScrollTrigger.create({
-            trigger: card,
-            start: 'center center',
-            endTrigger: lastCard,
-            end: 'center center',
-            pin: true,
-            pinSpacing: false
-          });
-
-          this.#scrollTriggers.push(st);
-        }
+        card.style.position = 'sticky';
+        card.style.top = '7.5vh'; // Centers 85vh card vertically
+        card.style.zIndex = index + 1; // Later cards on top
       });
+
+      // Cards naturally stack via sticky positioning
+      // No additional animations needed - clean stacking effect
     }
 
     // ========================================================================
