@@ -1,0 +1,225 @@
+/* ==========================================================================
+   OPTION 1 & 2 STYLES
+   Styles for A/B testing Services/Collections separation
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   OPTION 1: Two Separate Sections
+   -------------------------------------------------------------------------- */
+
+/* Section Header */
+.cards-section__header {
+  text-align: center;
+  margin-bottom: 48px;
+  padding: 0 24px;
+}
+
+.cards-section__title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-white);
+  margin: 0 0 16px;
+}
+
+.cards-section__header .cards-hint {
+  position: static;
+  margin: 0;
+}
+
+/* Services Section - slightly less bottom margin */
+.cards-section--services {
+  margin-bottom: 60px;
+}
+
+/* Collections Section - add top padding for visual separation */
+.cards-section--collections {
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   OPTION 2: Visual Differentiation (Badges + Larger Cards)
+   -------------------------------------------------------------------------- */
+
+/* Inline Group Labels */
+.cm-gallery__group-label {
+  width: 100%;
+  text-align: center;
+  padding: 24px 0 8px;
+  margin-top: 24px;
+}
+
+.cm-gallery__group-label:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.cm-gallery__group-label span {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  position: relative;
+  padding: 0 24px;
+}
+
+/* Decorative lines */
+.cm-gallery__group-label span::before,
+.cm-gallery__group-label span::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(to var(--direction), rgba(255, 255, 255, 0.3), transparent);
+}
+
+.cm-gallery__group-label span::before {
+  --direction: left;
+  right: 100%;
+}
+
+.cm-gallery__group-label span::after {
+  --direction: right;
+  left: 100%;
+}
+
+/* Collection Badge Overlay - Dark Glassmorphism for contrast */
+.cm-card--collection {
+  position: relative;
+}
+
+.cm-card__badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  padding: 10px 18px;
+  /* Dark glassmorphism - good contrast on any image */
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-white);
+  /* Subtle shadow for depth */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Collection cards - slightly different aspect ratio */
+.cm-card--collection {
+  /* Can be adjusted for visual hierarchy */
+}
+
+/* --------------------------------------------------------------------------
+   OPTION 3: Hybrid - Two Sections with Lightweight Inline Labels
+   Combines: Separate stacking contexts (Option 1) + Lightweight labels (Option 2)
+   -------------------------------------------------------------------------- */
+
+/* Section-level Inline Label (outside gallery, before cards) */
+.cards-section__inline-label {
+  text-align: center;
+  padding: 0 24px;
+  margin-bottom: 32px;
+}
+
+.cards-section__inline-label span {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  position: relative;
+  display: inline-block;
+  padding: 0 24px;
+}
+
+/* Decorative lines extending from label */
+.cards-section__inline-label span::before,
+.cards-section__inline-label span::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(to var(--direction), rgba(255, 255, 255, 0.3), transparent);
+}
+
+.cards-section__inline-label span::before {
+  --direction: left;
+  right: 100%;
+}
+
+.cards-section__inline-label span::after {
+  --direction: right;
+  left: 100%;
+}
+
+/* Option 3 specific: No border between sections, just spacing */
+.cards-section--services .cards-section__inline-label {
+  /* Services label - no extra adjustments needed */
+}
+
+.cards-section--collections .cards-section__inline-label {
+  /* Collections gets slightly more top spacing */
+  padding-top: 20px;
+}
+
+/* Override Option 1 border for Option 3 hybrid (cleaner look) */
+.cards-section--services + .cards-section--collections {
+  border-top: none;
+  padding-top: 60px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cards-section__title {
+    font-size: 28px;
+  }
+
+  .cards-section__header {
+    margin-bottom: 32px;
+  }
+
+  .cards-section--collections {
+    padding-top: 32px;
+  }
+
+  .cm-card__badge {
+    top: 16px;
+    left: 16px;
+    padding: 8px 14px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .cm-gallery__group-label span::before,
+  .cm-gallery__group-label span::after {
+    width: 30px;
+  }
+
+  /* Option 3 responsive */
+  .cards-section__inline-label {
+    margin-bottom: 24px;
+  }
+
+  .cards-section__inline-label span::before,
+  .cards-section__inline-label span::after {
+    width: 40px;
+  }
+
+  .cards-section--services + .cards-section--collections {
+    padding-top: 40px;
+  }
+}

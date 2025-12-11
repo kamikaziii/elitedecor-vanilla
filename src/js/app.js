@@ -151,18 +151,40 @@
     // NOTE: Card stacking is handled by CardMorph component (cardStacking: true)
     // Do NOT call initCardStacking() here - it causes duplicate ScrollTriggers
 
-    // Cards hint visibility
+    // Cards hint visibility - supports multiple card sections
     const cardsHint = document.querySelector('.cards-hint');
-    const cardsSection = document.querySelector('.cards-section');
-    if (cardsHint && cardsSection) {
-      ScrollTrigger.create({
-        trigger: cardsSection,
-        start: 'top center',
-        end: 'bottom center',
-        onEnter: () => cardsHint.classList.add('visible'),
-        onLeave: () => cardsHint.classList.remove('visible'),
-        onEnterBack: () => cardsHint.classList.add('visible'),
-        onLeaveBack: () => cardsHint.classList.remove('visible')
+    const cardsSections = document.querySelectorAll('.cards-section');
+    if (cardsHint && cardsSections.length > 0) {
+      let activeSections = 0; // Track how many sections we're inside
+
+      cardsSections.forEach(section => {
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top center',
+          end: 'bottom center',
+          onEnter: () => {
+            activeSections++;
+            cardsHint.classList.add('visible');
+          },
+          onLeave: () => {
+            activeSections--;
+            if (activeSections <= 0) {
+              cardsHint.classList.remove('visible');
+              activeSections = 0; // Prevent negative
+            }
+          },
+          onEnterBack: () => {
+            activeSections++;
+            cardsHint.classList.add('visible');
+          },
+          onLeaveBack: () => {
+            activeSections--;
+            if (activeSections <= 0) {
+              cardsHint.classList.remove('visible');
+              activeSections = 0;
+            }
+          }
+        });
       });
     }
 

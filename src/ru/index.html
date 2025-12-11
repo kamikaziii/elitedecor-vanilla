@@ -87,6 +87,7 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/options.css">
   <link rel="stylesheet" href="../components/card-morph/dist/card-morph.css">
 
   <!-- Language Detection (runs before page render) -->
@@ -135,8 +136,13 @@
       <h3 class="section-description split-text" data-split="chars">Мебель на заказ, созданная для вашего дома, чтобы отразить ваш стиль и создать пространство, которое является функциональным и визуально потрясающим. Каждое изделие тщательно разработано, чтобы гармонично вписаться в ваш интерьер, предлагая комфорт, практичность и вневременную эстетику.</h3>
     </section>
 
-    <!-- Card Morph Gallery Section -->
-    <section class="cards-section">
+    <!-- От концепции до доставки Section -->
+    <section class="cards-section cards-section--services">
+      <!-- Inline Label -->
+      <div class="cards-section__inline-label">
+        <span>От концепции до доставки</span>
+      </div>
+      <!-- 90° hint text -->
       <p class="cards-hint">Нажмите для просмотра</p>
 
       <div class="cm-gallery" data-card-morph>
@@ -156,18 +162,6 @@
         <article class="cm-card" data-cm-view-id="delivery-installation" tabindex="0" role="button" aria-label="Смотреть Доставка и установка">
           <img class="cm-card__image" src="../assets/cards/delivery-installation.jpg" alt="Доставка и установка" loading="lazy">
           <h3 class="cm-card__title">Доставка и установка</h3>
-        </article>
-
-        <!-- Card 4: Noble Collection -->
-        <article class="cm-card" data-cm-view-id="noble" tabindex="0" role="button" aria-label="Смотреть Коллекцию Noble">
-          <img class="cm-card__image" src="../assets/collections/noble/hero.jpg" alt="Коллекция Noble" loading="lazy">
-          <h3 class="cm-card__title">Коллекция Noble</h3>
-        </article>
-
-        <!-- Card 5: Essense Collection -->
-        <article class="cm-card" data-cm-view-id="essense" tabindex="0" role="button" aria-label="Смотреть Коллекцию Essense">
-          <img class="cm-card__image" src="../assets/collections/essense/hero.jpg" alt="Коллекция Essense" loading="lazy">
-          <h3 class="cm-card__title">Коллекция Essense</h3>
         </article>
 
         <!-- ================================================================
@@ -347,6 +341,31 @@
             </section>
           </div>
         </div>
+
+      </div>
+    </section>
+
+    <!-- Collections Section -->
+    <section class="cards-section cards-section--collections">
+      <!-- Inline Label -->
+      <div class="cards-section__inline-label">
+        <span>Коллекции</span>
+      </div>
+
+      <div class="cm-gallery" data-card-morph>
+        <!-- Card: Noble Collection -->
+        <article class="cm-card cm-card--collection" data-cm-view-id="noble" tabindex="0" role="button" aria-label="Смотреть Коллекцию Noble">
+          <span class="cm-card__badge">Проект</span>
+          <img class="cm-card__image" src="../assets/collections/noble/hero.jpg" alt="Коллекция Noble" loading="lazy">
+          <h3 class="cm-card__title">Noble</h3>
+        </article>
+
+        <!-- Card: Essense Collection -->
+        <article class="cm-card cm-card--collection" data-cm-view-id="essense" tabindex="0" role="button" aria-label="Смотреть Коллекцию Essense">
+          <span class="cm-card__badge">Проект</span>
+          <img class="cm-card__image" src="../assets/collections/essense/hero.jpg" alt="Коллекция Essense" loading="lazy">
+          <h3 class="cm-card__title">Essense</h3>
+        </article>
 
         <!-- Noble Collection View -->
         <div id="noble-view" class="cm-view" aria-hidden="true">
