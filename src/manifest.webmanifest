@@ -2,7 +2,9 @@
   "name": "Elite Decor - Mobiliário Personalizado",
   "short_name": "Elite Decor",
   "description": "Mobiliário personalizado desenhado para a sua casa, criado para refletir o seu estilo.",
+  "id": "/",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
@@ -21,7 +23,13 @@
       "purpose": "any"
     },
     {
-      "src": "/assets/favicon/icon-512.png",
+      "src": "/assets/favicon/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/favicon/icon-512-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
