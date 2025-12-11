@@ -237,7 +237,8 @@
 
 /* Element: View Inner Container */
 .cm-view__inner {
-  min-height: 100vh;
+  min-height: 100vh; /* Fallback for older browsers */
+  min-height: 100svh; /* Modern browsers - accounts for mobile toolbar */
   padding: 0;
 }
 
@@ -291,7 +292,8 @@
 
 .cm-hero {
   position: relative;
-  height: 100vh;
+  height: 100vh; /* Fallback for older browsers */
+  height: 100svh; /* Modern browsers - accounts for mobile toolbar */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -375,7 +377,7 @@
 /* Element: Hero Scroll Indicator */
 .cm-hero__scroll-indicator {
   position: absolute;
-  bottom: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -486,7 +488,8 @@
 
 .cm-gallery-section {
   position: relative;
-  height: 100vh;
+  height: 100vh; /* Fallback for older browsers */
+  height: 100svh; /* Modern browsers - accounts for mobile toolbar */
   overflow: hidden;
   background: var(--cm-color-background);
 
@@ -997,7 +1000,8 @@
 
 @media (max-width: 991px) {
   .cm-card {
-    height: calc(100vh - 36px);
+    height: calc(100vh - 36px); /* Fallback */
+    height: calc(100svh - 36px);
     min-height: 550px;
     max-height: 800px;
   }
@@ -1011,7 +1015,8 @@
 
 @media (max-width: 768px) {
   .cm-card {
-    height: calc(100vh - 36px);
+    height: calc(100vh - 36px); /* Fallback */
+    height: calc(100svh - 36px);
     min-height: 450px;
     max-height: 700px;
   }
